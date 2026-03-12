@@ -4,10 +4,10 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's name in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
+ * Represents a Company's Name in the application.
+ * Guarantees: immutable; is valid as declared in {@link #isValidCompanyName(String)}
  */
-public class Name {
+public class CompanyName {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Names should only contain alphanumeric characters and spaces, and it should not be blank";
@@ -18,30 +18,30 @@ public class Name {
      */
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
 
-    public final String fullName;
+    public final String fullCompanyName;
 
     /**
-     * Constructs a {@code Name}.
+     * Constructs a {@code companyName}.
      *
-     * @param name A valid name.
+     * @param companyName A valid companyName.
      */
-    public Name(String name) {
-        requireNonNull(name);
-        checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
-        fullName = name;
+    public CompanyName(String companyName) {
+        requireNonNull(companyName);
+        checkArgument(isValidCompanyName(companyName), MESSAGE_CONSTRAINTS);
+        fullCompanyName = companyName;
     }
 
     /**
-     * Returns true if a given string is a valid name.
+     * Returns true if a given string is a valid companyName.
      */
-    public static boolean isValidName(String test) {
+    public static boolean isValidCompanyName(String test) {
         return test.matches(VALIDATION_REGEX);
     }
 
 
     @Override
     public String toString() {
-        return fullName;
+        return fullCompanyName;
     }
 
     @Override
@@ -51,17 +51,17 @@ public class Name {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof Name)) {
+        if (!(other instanceof CompanyName)) {
             return false;
         }
 
-        Name otherName = (Name) other;
-        return fullName.equals(otherName.fullName);
+        CompanyName otherName = (CompanyName) other;
+        return fullCompanyName.equals(otherName.fullCompanyName);
     }
 
     @Override
     public int hashCode() {
-        return fullName.hashCode();
+        return fullCompanyName.hashCode();
     }
 
 }

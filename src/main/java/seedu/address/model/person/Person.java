@@ -17,7 +17,7 @@ import seedu.address.model.tag.Tag;
 public class Person {
 
     // Identity fields
-    private final Name name;
+    private final CompanyName companyName;
     private final Phone phone;
     private final Email email;
 
@@ -29,9 +29,9 @@ public class Person {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Website website, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, website, address, tags);
-        this.name = name;
+    public Person(CompanyName companyName, Phone phone, Email email, Website website, Address address, Set<Tag> tags) {
+        requireAllNonNull(companyName, phone, email, website, address, tags);
+        this.companyName = companyName;
         this.phone = phone;
         this.email = email;
         this.website = website;
@@ -39,8 +39,8 @@ public class Person {
         this.tags.addAll(tags);
     }
 
-    public Name getName() {
-        return name;
+    public CompanyName getCompanyName() {
+        return companyName;
     }
 
     public Phone getPhone() {
@@ -77,7 +77,7 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getName().equals(getName());
+                && otherPerson.getCompanyName().equals(getCompanyName());
     }
 
     /**
@@ -96,7 +96,7 @@ public class Person {
         }
 
         Person otherPerson = (Person) other;
-        return name.equals(otherPerson.name)
+        return companyName.equals(otherPerson.companyName)
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && website.equals(otherPerson.website)
@@ -107,13 +107,13 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, website, address, tags);
+        return Objects.hash(companyName, phone, email, website, address, tags);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("name", name)
+                .add("companyName", companyName)
                 .add("phone", phone)
                 .add("email", email)
                 .add("website", website)
