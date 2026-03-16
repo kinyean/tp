@@ -23,7 +23,7 @@ checkstyle {
 // Run this locally with: ./gradlew testGui
 test {
     useJUnitPlatform()
-    exclude '**/GUItests/**'
+    exclude '**/guitests/**'
     jvmArgs = [
             '--add-exports=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED',
             '--add-exports=javafx.graphics/com.sun.glass.ui=ALL-UNNAMED',
@@ -48,7 +48,7 @@ task testGui(type: Test) {
             '--add-opens=javafx.graphics/com.sun.glass.ui=ALL-UNNAMED',
     ]
 
-    include '**/GUItests/**'
+    include '**/guitests/**'
 }
 
 task coverage(type: JacocoReport) {
