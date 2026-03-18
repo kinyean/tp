@@ -1,5 +1,5 @@
 {
-  "persons": [ {
+  "applications": [ {
     "companyName": "Alice Pauline",
     "role": "Machine Learning Engineer",
     "email": "alice@example.com",
