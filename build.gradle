@@ -36,6 +36,8 @@ test {
 }
 
 task testGui(type: Test) {
+    group = 'verification'
+    description = 'Runs GUI tests'
     useJUnitPlatform()
 
     jvmArgs = [
