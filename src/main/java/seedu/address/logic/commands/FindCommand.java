@@ -20,7 +20,7 @@ public class FindCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Finds all applications using the given prefixes (case-insensitive, partial match).\n"
             + "Matching outcome will be displayed as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
+            + "Format: find prefix/keyword ...\n"
             + "Example: "
             + COMMAND_WORD + " n/Grab\n"
             + COMMAND_WORD + " r/Backend Developer\n"

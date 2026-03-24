@@ -83,6 +83,66 @@ public class ApplicationMatchesPredicateTest {
     }
 
     @Test
+    public void test_emailKeywordButNoEmail_returnsFalse() {
+        ApplicationMatchesPredicate predicate =
+                new ApplicationMatchesPredicate(null, null, "gmail", null,
+                        null, null, null, Collections.emptyList());
+
+        assertFalse(predicate.test(new ApplicationBuilder().withEmail(null).build()));
+    }
+
+    @Test
+    public void test_emailDoesNotMatch_returnsFalse() {
+        ApplicationMatchesPredicate predicate =
+                new ApplicationMatchesPredicate(null, null, "gmail", null,
+                        null, null, null, Collections.emptyList());
+
+        assertFalse(predicate.test(new ApplicationBuilder()
+                .withEmail("yahoo@yahoo.com").build()));
+    }
+
+    @Test
+    public void test_websiteDoesNotMatch_returnsFalse() {
+        ApplicationMatchesPredicate predicate =
+                new ApplicationMatchesPredicate(null, null, null, "google",
+                        null, null, null, Collections.emptyList());
+
+        assertFalse(predicate.test(new ApplicationBuilder()
+                .withWebsite("amazon.com").build()));
+    }
+
+
+    @Test
+    public void test_addressDoesNotMatch_returnsFalse() {
+        ApplicationMatchesPredicate predicate =
+                new ApplicationMatchesPredicate(null, null, null, null,
+                        "clementi", null, null, Collections.emptyList());
+
+        assertFalse(predicate.test(new ApplicationBuilder()
+                .withAddress("jurong").build()));
+    }
+
+    @Test
+    public void test_dateDoesNotMatch_returnsFalse() {
+        ApplicationMatchesPredicate predicate =
+                new ApplicationMatchesPredicate(null, null, null, null,
+                        null, "06-03-2026", null, Collections.emptyList());
+
+        assertFalse(predicate.test(new ApplicationBuilder()
+                .withDate("03-26-2025").build()));
+    }
+
+    @Test
+    public void test_statusDoesNotMatch_returnsFalse() {
+        ApplicationMatchesPredicate predicate =
+                new ApplicationMatchesPredicate(null, null, null, null,
+                        null, null, "pending", Collections.emptyList());
+
+        assertFalse(predicate.test(new ApplicationBuilder()
+                .withStatus("rejected").build()));
+    }
+
+    @Test
     public void test_tagMatches_returnsTrue() {
         ApplicationMatchesPredicate predicate =
                 new ApplicationMatchesPredicate(null, null, null, null,

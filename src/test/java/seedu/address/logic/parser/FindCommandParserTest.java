@@ -58,13 +58,43 @@ public class FindCommandParserTest {
     }
 
     @Test
-    public void parse_emptyPrefix_returnsFindCommand() {
+    public void parse_emptyNamePrefix_returnsFindCommand() {
+        FindCommand expected =
+                new FindCommand(new ApplicationMatchesPredicate(
+                        "", null, null, null,
+                        null, null, null, Collections.emptyList()));
+
+        assertParseSuccess(parser, "n/", expected);
+    }
+
+    @Test
+    public void parse_emptyEmailPrefix_returnsFindCommand() {
         FindCommand expected =
                 new FindCommand(new ApplicationMatchesPredicate(
                         null, null, "", null,
                         null, null, null, Collections.emptyList()));
 
         assertParseSuccess(parser, "e/", expected);
+    }
+
+    @Test
+    public void parse_allEmptyPrefixes_returnsFindCommand() {
+        FindCommand expected =
+                new FindCommand(new ApplicationMatchesPredicate(
+                        "", "", "", "", "", "", "",
+                        Collections.singletonList("")));
+
+        assertParseSuccess(parser, "n/ r/ e/ w/ a/ d/ s/ t/", expected);
+    }
+
+    @Test
+    public void parse_emptyTag_returnsFindCommand() {
+        FindCommand expected =
+                new FindCommand(new ApplicationMatchesPredicate(
+                        null, null, null, null,
+                        null, null, null, Collections.singletonList("")));
+
+        assertParseSuccess(parser, "t/", expected);
     }
 
     @Test
