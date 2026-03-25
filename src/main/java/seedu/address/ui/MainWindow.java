@@ -154,6 +154,18 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
+     * Opens the summary window or focuses on it if already open (called from menu).
+     */
+    @FXML
+    public void handleSummaryMenu() {
+        try {
+            executeCommand("summary");
+        } catch (CommandException | ParseException e) {
+            logger.info("Failed to execute summary from menu: " + e.getMessage());
+        }
+    }
+
+    /**
      * Opens the summary window with the given content, or focuses on it if already open.
      */
     public void handleSummary(String summaryText) {
