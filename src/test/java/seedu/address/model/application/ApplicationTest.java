@@ -13,6 +13,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalApplications.ALICE;
 import static seedu.address.testutil.TypicalApplications.BOB;
 import static seedu.address.testutil.TypicalApplications.JETSTAR;
+import static seedu.address.testutil.TypicalApplications.JETTY;
 
 import org.junit.jupiter.api.Test;
 
@@ -118,10 +119,10 @@ public class ApplicationTest {
     public void toStringMethod() {
         String expected = Application.class.getCanonicalName()
                 + "{companyName=" + ALICE.getCompanyName() + ", role=" + ALICE.getRole()
-                + ", website=" + ALICE.getWebsite()
                 + ", address=" + ALICE.getAddress() + ", date=" + ALICE.getDate()
                 + ", status=" + ALICE.getStatus() + ", tags=" + ALICE.getTags()
-                + ", email=" + ALICE.getEmail() + "}";
+                + ", email=" + ALICE.getEmail()
+                + ", website=" + ALICE.getWebsite() + "}";
         assertEquals(expected, ALICE.toString());
     }
 
@@ -129,11 +130,20 @@ public class ApplicationTest {
     public void toStringMethod_emailAbsent() {
         String expected = Application.class.getCanonicalName()
                 + "{companyName=" + JETSTAR.getCompanyName() + ", role=" + JETSTAR.getRole()
-                + ", website=" + JETSTAR.getWebsite()
                 + ", address=" + JETSTAR.getAddress() + ", date=" + JETSTAR.getDate()
                 + ", status=" + JETSTAR.getStatus() + ", tags=" + JETSTAR.getTags()
-                + "}";
+                + ", website=" + JETSTAR.getWebsite() + "}";
         assertEquals(expected, JETSTAR.toString());
+    }
+
+    @Test
+    public void toStringMethod_websiteAbsent() {
+        String expected = Application.class.getCanonicalName()
+                + "{companyName=" + JETTY.getCompanyName() + ", role=" + JETTY.getRole()
+                + ", address=" + JETTY.getAddress() + ", date=" + JETTY.getDate()
+                + ", status=" + JETTY.getStatus() + ", tags=" + JETTY.getTags()
+                + ", email=" + JETTY.getEmail() + "}";
+        assertEquals(expected, JETTY.toString());
     }
 
     @Test

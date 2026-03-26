@@ -42,10 +42,9 @@ public class Messages {
                 .append(application.getRole());
 
         appendIfPresent(builder, "Email", application.getEmail());
+        appendIfPresent(builder, "Website", application.getWebsite());
 
-        builder.append("; Website: ")
-                .append(application.getWebsite())
-                .append("; Address: ")
+        builder.append("; Address: ")
                 .append(application.getAddress())
                 .append("; Date: ")
                 .append(application.getDate())

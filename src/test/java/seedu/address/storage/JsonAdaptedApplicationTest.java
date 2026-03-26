@@ -105,12 +105,18 @@ public class JsonAdaptedApplicationTest {
     }
 
     @Test
-    public void toModelType_nullWebsite_throwsIllegalValueException() {
-        JsonAdaptedApplication application = new JsonAdaptedApplication(VALID_COMPANY_NAME, VALID_ROLE, VALID_EMAIL,
-                null, VALID_ADDRESS, VALID_DATE, VALID_STATUS, null, VALID_TAGS);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Website.class.getSimpleName());
-        assertThrows(IllegalValueException.class, expectedMessage, application::toModelType);
+    public void constructor_nullWebsite_roundTripSuccess() throws Exception {
+        Application application = new ApplicationBuilder(BENSON)
+                .withWebsite(null)
+                .build();
+
+        JsonAdaptedApplication jsonApp = new JsonAdaptedApplication(application);
+        Application converted = jsonApp.toModelType();
+
+        assertNull(converted.getWebsite());
+
     }
+
 
     @Test
     public void toModelType_invalidWebsite_throwsIllegalValueException() {

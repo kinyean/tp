@@ -26,6 +26,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.application.Application;
 import seedu.address.model.application.Email;
+import seedu.address.model.application.Website;
 import seedu.address.testutil.ApplicationBuilder;
 import seedu.address.testutil.EditApplicationDescriptorBuilder;
 
@@ -208,6 +209,25 @@ public class EditCommandTest {
         EditCommand command = new EditCommand(index, descriptor);
         String result = command.toString();
         assertFalse(result.contains("email="));
+    }
+
+    @Test
+    public void toString_websitePresent_descriptorIncludesWebsite() {
+        Index index = Index.fromOneBased(1);
+        EditCommand.EditApplicationDescriptor descriptor = new EditCommand.EditApplicationDescriptor();
+        descriptor.setWebsite(new Website("google.com"));
+        EditCommand editCommand = new EditCommand(index, descriptor);
+        String result = editCommand.toString();
+        assertTrue(result.contains("website=google.com"));
+    }
+
+    @Test
+    public void toString_websiteAbsent_descriptorOmitsWebsite() {
+        Index index = Index.fromOneBased(1);
+        EditCommand.EditApplicationDescriptor descriptor = new EditCommand.EditApplicationDescriptor();
+        EditCommand command = new EditCommand(index, descriptor);
+        String result = command.toString();
+        assertFalse(result.contains("website="));
     }
 
 }

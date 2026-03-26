@@ -280,7 +280,6 @@ public class EditCommand extends Command {
             ToStringBuilder builder = new ToStringBuilder(this)
                     .add("companyName", companyName)
                     .add("role", role)
-                    .add("website", website)
                     .add("address", address)
                     .add("date", date)
                     .add("status", status)
@@ -288,6 +287,9 @@ public class EditCommand extends Command {
 
             if (email != null) {
                 builder.add("email", email);
+            }
+            if (website != null) {
+                builder.add("website", website);
             }
 
             return builder.toString();

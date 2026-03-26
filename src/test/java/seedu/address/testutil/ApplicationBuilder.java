@@ -115,7 +115,11 @@ public class ApplicationBuilder {
      * Sets the {@code Website} of the {@code Application} that we are building.
      */
     public ApplicationBuilder withWebsite(String website) {
-        this.website = new Website(website);
+        if (website == null) {
+            this.website = null;
+        } else {
+            this.website = new Website(website);
+        }
         return this;
     }
 

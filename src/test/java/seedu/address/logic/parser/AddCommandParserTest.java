@@ -33,7 +33,6 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_BACKEND_DE
 import static seedu.address.logic.commands.CommandTestUtil.VALID_STATUS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_WEBSITE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.WEBSITE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.WEBSITE_DESC_BOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
@@ -198,6 +197,12 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_BOB + ROLE_DESC_BACKEND_DEVELOPER
                         + WEBSITE_DESC_BOB + ADDRESS_DESC_BOB + DATE_DESC_BOB + STATUS_DESC_BOB,
                 new AddCommand(expectedApplicationNoEmail));
+
+        // missing website
+        Application expectedApplicationNoWebsite = new ApplicationBuilder(BOB).withWebsite(null).withTags().build();
+        assertParseSuccess(parser, NAME_DESC_BOB + ROLE_DESC_BACKEND_DEVELOPER
+                       + ADDRESS_DESC_BOB + DATE_DESC_BOB + STATUS_DESC_BOB + EMAIL_DESC_BOB,
+                new AddCommand(expectedApplicationNoWebsite));
     }
 
     @Test
@@ -212,11 +217,6 @@ public class AddCommandParserTest {
         // missing role prefix
         assertParseFailure(parser, NAME_DESC_BOB + VALID_ROLE_BACKEND_DEVELOPER + EMAIL_DESC_BOB
                         + WEBSITE_DESC_BOB + ADDRESS_DESC_BOB + DATE_DESC_BOB + STATUS_DESC_BOB,
-                expectedMessage);
-
-        // missing website prefix
-        assertParseFailure(parser, NAME_DESC_BOB + ROLE_DESC_BACKEND_DEVELOPER + EMAIL_DESC_BOB
-                        + VALID_WEBSITE_BOB + ADDRESS_DESC_BOB + DATE_DESC_BOB + STATUS_DESC_BOB,
                 expectedMessage);
 
         // missing address prefix

@@ -66,7 +66,7 @@ class JsonAdaptedApplication {
         companyName = source.getCompanyName().fullCompanyName;
         role = source.getRole().value;
         email = source.getEmail() == null ? null : source.getEmail().value;
-        website = source.getWebsite().websiteName;
+        website = source.getWebsite() == null ? null : source.getWebsite().websiteName;
         address = source.getAddress().value;
         date = source.getDate().value;
         status = source.getStatus().toString();
@@ -114,13 +114,15 @@ class JsonAdaptedApplication {
             modelEmail = new Email(email);
         }
 
+        final Website modelWebsite;
         if (website == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Website.class.getSimpleName()));
+            modelWebsite = null;
+        } else {
+            if (!Website.isValidWebsite(website)) {
+                throw new IllegalValueException(Website.MESSAGE_CONSTRAINTS);
+            }
+            modelWebsite = new Website(website);
         }
-        if (!Website.isValidWebsite(website)) {
-            throw new IllegalValueException(Website.MESSAGE_CONSTRAINTS);
-        }
-        final Website modelWebsite = new Website(website);
 
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));

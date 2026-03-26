@@ -41,7 +41,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                         PREFIX_WEBSITE, PREFIX_ADDRESS, PREFIX_DATE, PREFIX_STATUS, PREFIX_TAG);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_ROLE,
-                PREFIX_WEBSITE, PREFIX_DATE, PREFIX_STATUS)
+                 PREFIX_DATE, PREFIX_STATUS)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -54,7 +54,10 @@ public class AddCommandParser implements Parser<AddCommand> {
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
             email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         }
-        Website website = ParserUtil.parseWebsite(argMultimap.getValue(PREFIX_WEBSITE).get());
+        Website website = null;
+        if (argMultimap.getValue(PREFIX_WEBSITE).isPresent()) {
+            website = ParserUtil.parseWebsite(argMultimap.getValue(PREFIX_WEBSITE).get());
+        }
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
         Status status = ParserUtil.parseStatus(argMultimap.getValue(PREFIX_STATUS).get());
