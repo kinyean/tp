@@ -10,9 +10,11 @@ Class "{abstract}\nUiPart" as UiPart
 Class UiManager
 Class MainWindow
 Class HelpWindow
+Class SummaryWindow
+Class NotesWindow
 Class ResultDisplay
-Class PersonListPanel
-Class PersonCard
+Class ApplicationListPanel
+Class ApplicationCard
 Class StatusBarFooter
 Class CommandBox
 }
@@ -32,27 +34,33 @@ UiManager .left.|> Ui
 UiManager -down-> "1" MainWindow
 MainWindow *-down->  "1" CommandBox
 MainWindow *-down-> "1" ResultDisplay
-MainWindow *-down-> "1" PersonListPanel
+MainWindow *-down-> "1" ApplicationListPanel
 MainWindow *-down-> "1" StatusBarFooter
-MainWindow --> "0..1" HelpWindow
+MainWindow --> "1" HelpWindow
+MainWindow --> "1" SummaryWindow
+MainWindow --> "1" NotesWindow
 
-PersonListPanel -down-> "*" PersonCard
+ApplicationListPanel -down-> "*" ApplicationCard
 
 MainWindow -left-|> UiPart
 
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
-PersonListPanel --|> UiPart
-PersonCard --|> UiPart
+ApplicationListPanel --|> UiPart
+ApplicationCard --|> UiPart
 StatusBarFooter --|> UiPart
 HelpWindow --|> UiPart
+SummaryWindow --|> UiPart
+NotesWindow --|> UiPart
 
-PersonCard ..> Model
+ApplicationCard ..> Model
 UiManager -right-> Logic
 MainWindow -left-> Logic
 
-PersonListPanel -[hidden]left- HelpWindow
+ApplicationListPanel -[hidden]left- HelpWindow
 HelpWindow -[hidden]left- CommandBox
+SummaryWindow -[hidden]left- HelpWindow
+NotesWindow -[hidden]left- SummaryWindow
 CommandBox -[hidden]left- ResultDisplay
 ResultDisplay -[hidden]left- StatusBarFooter
 
