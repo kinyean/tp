@@ -7,9 +7,11 @@ import static seedu.address.testutil.TypicalApplications.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.testutil.ApplicationBuilder;
 
 public class SummaryCommandTest {
 
@@ -88,6 +90,52 @@ public class SummaryCommandTest {
                 + "Success Rate: " + successRate + "\n"
                 + "\n"
                 + "Archived: " + archived + "\n";
+        CommandResult expectedCommandResult = new CommandResult(expectedText, UiAction.SHOW_SUMMARY);
+
+        assertCommandSuccess(new SummaryCommand(), model, expectedCommandResult, expectedModel);
+    }
+
+    @Test
+    public void execute_withArchivedApplication_excludesFromCounts() {
+        AddressBook ab = new AddressBook();
+        ab.addApplication(new ApplicationBuilder().withName("Active Co").withStatus("Offered").build());
+        ab.addApplication(new ApplicationBuilder().withName("Archived Co").withStatus("Rejected")
+                .withTags("archived").build());
+
+        Model model = new ModelManager(ab, new UserPrefs());
+        Model expectedModel = new ModelManager(ab, new UserPrefs());
+
+        String expectedText = "Application Summary\n\n"
+                + "Total Applications: 1\n"
+                + "Pending: 0\n"
+                + "Offered: 1\n"
+                + "Rejected: 0\n"
+                + "Success Rate: 100.0%\n"
+                + "\n"
+                + "Archived: 1\n";
+        CommandResult expectedCommandResult = new CommandResult(expectedText, UiAction.SHOW_SUMMARY);
+
+        assertCommandSuccess(new SummaryCommand(), model, expectedCommandResult, expectedModel);
+    }
+
+    @Test
+    public void execute_withOfferedAndRejected_showsSuccessRate() {
+        AddressBook ab = new AddressBook();
+        ab.addApplication(new ApplicationBuilder().withName("Company A").withStatus("Offered").build());
+        ab.addApplication(new ApplicationBuilder().withName("Company B").withStatus("Rejected").build());
+        ab.addApplication(new ApplicationBuilder().withName("Company C").withStatus("Rejected").build());
+
+        Model model = new ModelManager(ab, new UserPrefs());
+        Model expectedModel = new ModelManager(ab, new UserPrefs());
+
+        String expectedText = "Application Summary\n\n"
+                + "Total Applications: 3\n"
+                + "Pending: 0\n"
+                + "Offered: 1\n"
+                + "Rejected: 2\n"
+                + "Success Rate: 33.3%\n"
+                + "\n"
+                + "Archived: 0\n";
         CommandResult expectedCommandResult = new CommandResult(expectedText, UiAction.SHOW_SUMMARY);
 
         assertCommandSuccess(new SummaryCommand(), model, expectedCommandResult, expectedModel);
