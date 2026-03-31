@@ -2,10 +2,11 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.application.Application;
@@ -15,35 +16,46 @@ import seedu.address.model.application.Application;
  */
 public class ApplicationListPanel extends UiPart<Region> {
     private static final String FXML = "ApplicationListPanel.fxml";
+    private static final int NUM_COLUMNS = 2;
     private final Logger logger = LogsCenter.getLogger(ApplicationListPanel.class);
 
     @FXML
-    private ListView<Application> applicationListView;
+    private GridPane applicationGridPane;
 
     /**
      * Creates a {@code ApplicationListPanel} with the given {@code ObservableList}.
      */
     public ApplicationListPanel(ObservableList<Application> applicationList) {
         super(FXML);
-        applicationListView.setItems(applicationList);
-        applicationListView.setCellFactory(listView -> new ApplicationListViewCell());
+        
+        for (int i = 0; i < NUM_COLUMNS; i++) {
+            ColumnConstraints col = new ColumnConstraints();
+            col.setPercentWidth(100.0 / NUM_COLUMNS);
+            applicationGridPane.getColumnConstraints().add(col);
+        }
+
+        fillGrid(applicationList);
+        
+        applicationList.addListener((ListChangeListener<Application>) change -> {
+            fillGrid(applicationList);
+        });
     }
 
-    /**
-     * Custom {@code ListCell} that displays the graphics of a {@code Application} using a {@code ApplicationCard}.
-     */
-    class ApplicationListViewCell extends ListCell<Application> {
-        @Override
-        protected void updateItem(Application application, boolean empty) {
-            super.updateItem(application, empty);
+    private void fillGrid(ObservableList<Application> applicationList) {
+        applicationGridPane.getChildren().clear();
 
-            if (empty || application == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                setGraphic(new ApplicationCard(application, getIndex() + 1).getRoot());
+        int col = 0;
+        int row = 0;
+        for (int i = 0; i < applicationList.size(); i++) {
+            ApplicationCard card = new ApplicationCard(applicationList.get(i), i + 1);
+            Region cardRoot = card.getRoot();
+            cardRoot.getStyleClass().add("application-grid-card");
+            applicationGridPane.add(cardRoot, col, row);
+            col++;
+            if (col == NUM_COLUMNS) {
+                col = 0;
+                row++;
             }
         }
     }
-
 }
