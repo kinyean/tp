@@ -298,6 +298,25 @@ Examples:
 * `summary` opens the Summary window showing your application statistics.
 * Clicking **Summary** in the menu bar opens the same Summary window.
 
+### Opening application notes : `open`
+
+Opens and displays the notes written during the internship application process for the specified application.
+
+Format: `open INDEX [m/CHOICE_OF_EDIT]`
+
+* Opens the notes for the application at the specified `INDEX`.
+* The index refers to the index number shown in the displayed application list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* `m/CHOICE_OF_EDIT` is optional. It must be `true` or `false`, and defaults to `false` if omitted.
+* If `m/false` or omitted, the notes are opened in **view-only** mode.
+* If `m/true`, the notes are opened in **edit** mode, allowing you to modify them.
+
+Examples:
+* `open 1` opens the notes for the 1st application in view-only mode.
+* `open 2 m/true` opens the notes for the 2nd application in edit mode.
+
+![Edit Notes](images/editNotes.png)
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
@@ -355,5 +374,6 @@ Action | Format, Examples
 **Archive** | `archive INDEX`<br> e.g., `archive 2`
 **Unarchive** | `unarchive INDEX`<br> e.g., `unarchive 1`
 **List** | `list`
+**Open** | `open INDEX [m/CHOICE_OF_EDIT]`<br> e.g., `open 1 m/true`
 **Help** | `help`
 **Summary** | `summary`
