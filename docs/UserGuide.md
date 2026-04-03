@@ -110,39 +110,114 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st application to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd application to be `Betsy Crower` and clears all existing tags.
 
+
+---
 ### Locating applications: `find`
 
 Finds applications that match the specified keywords.
 
-Format: `find [n/NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [d/DATE] [s/STATUS] [t/TAG]...`
+Format: `find [n/NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [d/DATE] [s/STATUS] [t/TAG]`
 
-* All fields are optional. At least one field must be provided.
-* The search is case-insensitive. 
-  e.g `find n/google` will match `Google`.
-* Partial matching is supported. 
-  e.g. `find n/goog` will match `Google`.
-* Multiple fields are combined using **AND** logic.
+
+### 📖 Terminology
+* **Field**: `n/NAME`, `r/ROLE`, `e/EMAIL`, `w/WEBSITE`, `a/ADDRESS`, `d/DATE`, `s/STATUS` and `t/TAG` are called fields.
+* **Prefix**: `n/`, `r/`, `e/`, `w/`, `a/`, `d/`, `s/` and `t/` are called prefixes.
+* **Keyword**: the text after the prefix is called keyword. 
+  e.g. in `n/Google`, `Google` is the keyword.
+
+![find result for 'find t/oa t/fintech'](images/FindCommand.png)
+
+<br>
+
+![find result for 'find t/oa t/fintech'](images/FindResult.png)
+
+### ⚠️ General Behaviour
+
+* All fields (e.g. `n/NAME`, `r/ROLE`) are optional, but **at least one field must be provided**.
+
+* The search is **case-insensitive**. 
+  e.g `find n/google` matches `Google`.
+
+* Partial matching is supported for all fields using **substring matching (not fuzzy matching)**.  
+  e.g. `find n/Goog` matches `Google`,
+  but `find n/Gogle` will NOT match `Google`
+
+* Multiple **different** fields are combined using **AND** logic.
   e.g. `find n/Google r/Backend Developer` returns applications that match both name and role.
+
 * For tags, multiple keywords are combined using **OR** logic.
   e.g. `find t/backend developer t/frontend developer` returns applications that match either tag.
-* For optional fields (`email`, `website`, `address`): 
-  Using an empty prefix (e.g. e/) matches applications with no value for that field.
 
-Examples:
+* For optional fields (`email`, `website`, `address`): 
+  Using an empty prefix (e.g. `e/`) matches applications with no value for that field.
+  e.g. `find e/` returns applications that have no email.
+
+
+### ⚠️ Important: Prefix-Based Filtering
+
+Filtering is **only applied to keywords that are associated with a prefix**. 
+`n/`, `r/`, `e/`, `w/`, `a/`, `d/`, `s/`, and `t/` are valid prefixes for filtering.
+
+Any text **without a valid prefix will NOT be used for filtering**.
+
+
+#### ❗ Missing prefix at the start of the command
+
+`find Grab s/Pending`
+
+* `s/Pending` → used for filtering (status)
+* `Grab` → ignored (no prefix)
+
+This behaves the same as:
+`find s/Pending`
+
+#### ❗ Missing prefix in the later part of the command
+
+`find n/Google Software Engineer`
+
+* Everything after `n/` is treated as the **name keyword**
+
+Interpreted as:
+`n/Google Software Engineer`
+
+This searches for a company name containing:
+`Google Software Engineer`
+
+It will **NOT** treat `Software Engineer` as a role.
+
+#### ❗ Repeated prefixes
+
+If the same prefix is provided multiple times, **only the last occurrence will be used**.
+Finding multiple applications with multiple keywords for the same field at the same time is not supported in this version.
+
+e.g.  
+`find n/google n/meta`
+
+This will be interpreted as:
+
+`find n/meta`
+
+The earlier keyword (`google`) will be ignored.
+
+
+### Examples:
 * `find n/google`
   Returns applications with company names containing "google"
+
 * `find r/intern s/applied`
   Returns applications with role containing "intern" and status containing "applied"
+
 * `find e/gmail`
   Returns applications with email containing "gmail"
+
 * `find e/`
   Returns applications that have no email
+
 * `find t/oa t/fintech`
   Returns applications tagged with either "oa" or "fintech"
-<br>
-<br>
-![find result for 'find t/oa t/fintech'](images/findOaFintech.png)
 
+
+---
 ### Viewing archived applications
 
 Displays all archived applications.
