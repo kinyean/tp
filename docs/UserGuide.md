@@ -58,7 +58,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
@@ -66,26 +66,37 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Opens the in-app help window that lists the supported HireME commands and their formats.
 
 ![help message](images/helpMessage.png)
 
 Format: `help`
 
+You can also open the same help window from the `Help` menu or with the keyboard shortcut `F1`.
+
+Example:
+* `help`
+
 
 ### Adding a application: `add`
 
-Adds a application to the address book.
+Adds a new application to HireME.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/COMPANY_NAME r/ROLE d/DATE s/STATUS [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A application can have any number of tags (including 0)
 </div>
 
+* `n/COMPANY_NAME`, `r/ROLE`, `d/DATE`, and `s/STATUS` are required.
+* `e/EMAIL`, `w/WEBSITE`, `a/ADDRESS`, and `t/TAG` are optional.
+* `DATE` must be in `DD-MM-YYYY` format.
+* `STATUS` must be one of `Pending`, `Offered`, or `Rejected`.
+* The command rejects duplicate applications with the same company name and role.
+
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/Grab r/Backend Developer Intern d/01-03-2026 s/Pending e/johnd@example.com w/https://grab.careers a/3 Media Close t/InterviewRound2 t/BigTech`
+* `add n/Stripe r/Software Engineer d/19-02-2026 s/Offered`
 
 ### Listing all applications : `list`
 
