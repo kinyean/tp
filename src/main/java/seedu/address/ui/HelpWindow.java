@@ -15,68 +15,12 @@ import seedu.address.commons.core.LogsCenter;
  * Controller for a help page
  */
 public class HelpWindow extends UiPart<Stage> {
-
-
-    public static final String HELP_MESSAGE = """
-            HireME – Command Help
-            
-            Track your internship applications using the commands below.
-            
-            add: Add a new application.
-              Format: add n/COMPANY_NAME r/ROLE d/DATE s/STATUS [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [t/TAG]...
-              Status must be Pending, Offered, or Rejected. Date must be DD-MM-YYYY.
-              Example: add n/Google r/Software Engineer d/19-02-2026 s/Pending e/hr@gmail.com
-            
-            edit: Update an application by its list number.
-              Format: edit INDEX [n/COMPANY_NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [d/DATE] \
-            [s/STATUS] [t/TAG]...
-              At least one field must be provided.
-              Example: edit 1 r/Backend Developer Intern e/johndoe@gmail.com
-            
-            delete: Remove an application by its list number.
-              Format: delete INDEX
-              Example: delete 1
-            
-            find: Find applications by field (case-insensitive, partial match).
-              Format: find [n/NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [d/DATE] [s/STATUS] [t/TAG]...
-              At least one search field must be provided.
-              Example: find n/Google r/Backend Developer s/Pending
-            
-            archive: Archive an application from the current list.
-              Format: archive INDEX
-              Archived applications are hidden from the normal list.
-              Example: archive 1
-            
-            unarchive: Restore an application from the archived list.
-              Format: unarchive INDEX
-              Use command 'list archived' first, then unarchive the shown index.
-              Example: unarchive 1
-            
-            open: Open the notes for an application.
-              Format: open INDEX [m/CHOICE_OF_EDIT]
-              m/ must be true or false. Defaults to false (view only).
-              Example: open 1 m/true
-            
-            summary: Show a summary of application statistics.
-            
-            list: Display unarchived applications.
-              Format: list [archived]
-              Use list archived to show only archived applications.
-              Example: list archived
-            
-            clear: Remove all applications.
-            
-            help: Show this help message.
-
-            exit: Exit the program.""";
-
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
-    private static final String PRIMARY = "#4FC3F7"; // accent blue
-    private static final String TEXT = "#E6E6E6"; // main text
-    private static final String SUBTLE = "#A0A0A0"; // secondary text
-    private static final String MUTED = "#6B6B6B"; // notes
-    private static final String CODE_BG = "#2A2A2A"; // code background
+    private static final String TITLE = "#4FC3F7"; // accent blue
+    private static final String SUB_TITLE = "#E6E6E6"; // main text
+    private static final String TEXT = "#A0A0A0"; // secondary text
+    private static final String CODE = "#2A2A2A"; // code background
 
     @FXML
     private TextFlow helpMessage;
@@ -92,8 +36,6 @@ public class HelpWindow extends UiPart<Stage> {
     public HelpWindow(Stage root) {
         super(FXML, root);
         root.setResizable(true);
-        root.setMinWidth(500);
-        root.setMinHeight(400);
     }
 
     /**
@@ -110,9 +52,7 @@ public class HelpWindow extends UiPart<Stage> {
      */
     @FXML
     public void initialize() {
-        Text text = new Text(HELP_MESSAGE);
-
-        text.wrappingWidthProperty().bind(scrollPane.widthProperty().subtract(30));
+        helpMessage.prefWidthProperty().bind(scrollPane.widthProperty().subtract(30));
         helpMessage.getChildren().clear();
         helpMessage.getChildren().addAll(
                 title(),
@@ -200,18 +140,18 @@ public class HelpWindow extends UiPart<Stage> {
         List<Text> texts = new ArrayList<>();
 
         texts.add(header(name));
-        texts.add(body(": " + desc + "\n"));
+        texts.add(body(desc + "\n"));
 
         if (format != null) {
-            texts.add(code("Format: " + format + "\n"));
+            texts.add(code(format));
         }
 
         if (note != null) {
-            texts.add(note("Notes: " + note));
+            texts.add(note(note));
         }
 
         if (example != null) {
-            texts.add(example("Example: " + example));
+            texts.add(example(example));
         }
 
         texts.add(body("\n\n"));
@@ -220,21 +160,21 @@ public class HelpWindow extends UiPart<Stage> {
     }
 
     private Text title() {
-        Text t = new Text("HireME – Command Help\n\n");
+        Text t = new Text("HireME – Command Help\n");
         t.setStyle(
                 "-fx-font-size: 28px;"
                 + "-fx-font-weight: bold;"
-                + "-fx-fill: " + PRIMARY + ";"
+                + "-fx-fill: " + TITLE + ";"
         );
         return t;
     }
 
     private Text header(String s) {
-        Text t = new Text(s);
+        Text t = new Text(s + ": ");
         t.setStyle(
                 "-fx-font-size: 18px;"
                 + "-fx-font-weight: bold;"
-                + "-fx-fill: " + PRIMARY + ";"
+                + "-fx-fill: " + TITLE + ";"
         );
         return t;
     }
@@ -243,36 +183,36 @@ public class HelpWindow extends UiPart<Stage> {
         Text t = new Text(s);
         t.setStyle(
                 "-fx-font-size: 14px;"
-                + "-fx-fill: " + TEXT + ";"
+                + "-fx-fill: " + SUB_TITLE + ";"
         );
         return t;
     }
 
     private Text code(String s) {
-        Text t = new Text(s);
+        Text t = new Text("Format: " + s + "\n");
         t.setStyle(
-                "-fx-font-size: 13px;"
+                "-fx-font-size: 14px;"
                 + "-fx-font-family: 'Consolas';"
                 + "-fx-fill: #81C784;"
-                + "-fx-background-color: " + CODE_BG + ";"
+                + "-fx-background-color: " + CODE + ";"
         );
         return t;
     }
 
     private Text example(String s) {
-        Text t = new Text(s);
+        Text t = new Text("Example: " + s);
         t.setStyle(
-                "-fx-font-size: 13px;"
-                + "-fx-fill: " + SUBTLE + ";"
+                "-fx-font-size: 14px;"
+                + "-fx-fill: " + TEXT + ";"
         );
         return t;
     }
 
     private Text note(String s) {
-        Text t = new Text("  " + s + "\n");
+        Text t = new Text("Notes: " + s + "\n");
         t.setStyle(
-                "-fx-font-size: 13px;"
-                + "-fx-fill: " + MUTED + ";"
+                "-fx-font-size: 14px;"
+                + "-fx-fill: " + TEXT + ";"
         );
         return t;
     }
@@ -296,6 +236,8 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public void show() {
         logger.fine("Showing help page about the application.");
+        getRoot().setWidth(800);
+        getRoot().setHeight(750);
         getRoot().show();
         getRoot().centerOnScreen();
     }
