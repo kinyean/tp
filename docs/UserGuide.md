@@ -296,7 +296,7 @@ Format: `summary`
 * Shows the total number of active (non-archived) applications.
 * Breaks down active applications by status: `Pending`, `Offered`, and `Rejected`.
 * Calculates your `Success Rate`: the percentage of decided applications (Offered + Rejected) that resulted in an
-offer. Displays `0.0` if no decisions have been made yet.
+offer. Displays `N/A` if no decisions have been made yet.
 * Also shows the count of `Archived` applications separately.
 
 ![summary window](images/Summary.png)
