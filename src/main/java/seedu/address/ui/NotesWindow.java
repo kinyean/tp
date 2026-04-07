@@ -58,8 +58,8 @@ public class NotesWindow extends UiPart<Stage> {
     /**
      * Sets up the window in read-only mode displaying the given notes.
      */
-    public void setViewMode(String notes) {
-        getRoot().setTitle("Notes (View)");
+    public void setViewMode(String notes, String companyName) {
+        getRoot().setTitle("Notes (View) - " + companyName);
         viewPane.setVisible(true);
         viewPane.setManaged(true);
         notesTextArea.setVisible(false);
@@ -74,9 +74,9 @@ public class NotesWindow extends UiPart<Stage> {
     /**
      * Sets up the window in edit mode with the given notes and save callback.
      */
-    public void setEditMode(String notes, Consumer<String> saveCallback) {
+    public void setEditMode(String notes, Consumer<String> saveCallback, String companyName) {
         this.saveCallback = saveCallback;
-        getRoot().setTitle("Notes (Edit)");
+        getRoot().setTitle("Notes (Edit) - " + companyName);
         viewPane.setVisible(false);
         viewPane.setManaged(false);
         notesTextArea.setVisible(true);
