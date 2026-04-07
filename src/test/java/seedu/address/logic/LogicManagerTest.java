@@ -107,12 +107,29 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void saveApplicationNotes_validNotes_success() throws Exception {
+    public void saveApplicationNotes_noSelectedApplication_returnsFalse() {
+        assertEquals(false, logic.saveApplicationNotes("test notes"));
+    }
+
+    @Test
+    public void saveApplicationNotes_applicationDeletedAfterSelection_returnsFalse() {
         Application application = new ApplicationBuilder().build();
         model.addApplication(application);
         model.editApplicationNotes(application);
 
-        logic.saveApplicationNotes("test notes");
+        // Remove the application so to test if hasApplication returns false
+        model.deleteApplication(application);
+
+        assertEquals(false, logic.saveApplicationNotes("test notes"));
+    }
+
+    @Test
+    public void saveApplicationNotes_validNotes_returnsTrue() throws Exception {
+        Application application = new ApplicationBuilder().build();
+        model.addApplication(application);
+        model.editApplicationNotes(application);
+
+        assertEquals(true, logic.saveApplicationNotes("test notes"));
 
         Application updated = logic.getSelectedNotesApplication();
         assertEquals("test notes", updated.getNotes());
