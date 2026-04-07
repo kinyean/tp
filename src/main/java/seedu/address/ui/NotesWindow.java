@@ -1,6 +1,6 @@
 package seedu.address.ui;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 import javafx.animation.PauseTransition;
@@ -12,6 +12,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import seedu.address.commons.core.LogsCenter;
 
 /**
@@ -23,7 +25,7 @@ public class NotesWindow extends UiPart<Stage> {
     private static final Logger logger = LogsCenter.getLogger(NotesWindow.class);
     private static final String FXML = "NotesWindow.fxml";
 
-    private Consumer<String> saveCallback;
+    private Function<String, Boolean> saveCallback;
 
     @FXML
     private ScrollPane viewPane;
@@ -76,7 +78,7 @@ public class NotesWindow extends UiPart<Stage> {
     /**
      * Sets up the window in edit mode with the given notes and save callback.
      */
-    public void setEditMode(String notes, Consumer<String> saveCallback, String companyName) {
+    public void setEditMode(String notes, Function<String, Boolean> saveCallback, String companyName) {
         this.saveCallback = saveCallback;
         getRoot().setTitle("Notes (Edit) - " + companyName);
         viewPane.setVisible(false);
@@ -85,6 +87,7 @@ public class NotesWindow extends UiPart<Stage> {
         notesTextArea.setManaged(true);
         saveButton.setVisible(true);
         saveButton.setManaged(true);
+        resetSaveButton();
 
         notesTextArea.setText(notes == null ? "" : notes);
     }
@@ -94,21 +97,57 @@ public class NotesWindow extends UiPart<Stage> {
      */
     @FXML
     private void handleSave() {
-        if (saveCallback != null) {
-            saveCallback.accept(notesTextArea.getText());
+        if (saveCallback == null) return;
+        boolean success = saveCallback.apply(notesTextArea.getText());
 
-            saveButton.setText("Saved!");
-            saveButton.setDisable(true);
-
-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(event -> {
-                saveButton.setText("Save");
-                saveButton.setDisable(false);
-            });
-
-            pause.play();
-            logger.fine("Notes saved.");
+        if (!success) {
+            showSaveFailure();
+            schedulePause(Duration.seconds(1), event -> hide());
+            return;
         }
+
+        showSaveSuccess();
+        schedulePause(Duration.seconds(1), event -> resetSaveButton());
+    }
+
+    /**
+     * Reset button appearance to original.
+     */
+    private void resetSaveButton() {
+        saveButton.getStyleClass().remove("danger");
+        saveButton.setText("Save");
+        saveButton.setDisable(false);
+    }
+
+    /**
+     * Sequence to show save action is success.
+     */
+    private void showSaveSuccess() {
+        saveButton.setText("Saved!");
+        saveButton.setDisable(true);
+        logger.fine("Notes saved.");
+    }
+
+    /**
+     * Show save failure when save is unsuccessful.
+     */
+    private void showSaveFailure() {
+        getRoot().setTitle("Notes (Edit Unsuccessful)");
+        saveButton.setText("Application deleted");
+        if (!saveButton.getStyleClass().contains("danger")) {
+            saveButton.getStyleClass().add("danger");
+        }
+        saveButton.setDisable(true);
+        logger.warning("Failed to save notes as the application no longer exists.");
+    }
+
+    /**
+     * Set pause on certain component to show notification before closing window.
+     */
+    private void schedulePause(Duration duration, EventHandler<ActionEvent> onFinished) {
+        PauseTransition pause = new PauseTransition(duration);
+        pause.setOnFinished(onFinished);
+        pause.play();
     }
 
     /**

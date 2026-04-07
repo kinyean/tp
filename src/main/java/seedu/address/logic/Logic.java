@@ -55,6 +55,8 @@ public interface Logic {
 
     /**
      * Saves the given notes to the currently selected application.
+     *
+     * @return true if the application exists and notes were saved successfully, false otherwise.
      */
-    void saveApplicationNotes(String notes);
+    boolean saveApplicationNotes(String notes);
 }

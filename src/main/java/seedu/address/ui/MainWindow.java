@@ -16,6 +16,7 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.application.Application;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -196,7 +197,7 @@ public class MainWindow extends UiPart<Stage> {
      * Opens the notes window in edit mode for the selected application.
      */
     private void handleEditNotes() {
-        seedu.address.model.application.Application app = logic.getSelectedNotesApplication();
+        Application app = logic.getSelectedNotesApplication();
         notesWindow.setEditMode(
                 app.getNotes(),
                 notes -> logic.saveApplicationNotes(notes),

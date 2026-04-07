@@ -24,3 +24,8 @@
     -fx-text-fill: white;
     -fx-font-size: 14px;
 }
+
+.button.danger {
+    -fx-background-color: #b3261e;
+    -fx-text-fill: white;
+}
