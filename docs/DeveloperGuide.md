@@ -189,15 +189,6 @@ The sequence diagram below illustrates the interactions when the user executes `
 * `FindCommandParser` parses the supplied prefixed fields and constructs an `ApplicationMatchesPredicate`.
 * `FindCommand` applies that matching condition through `Model#updateFilteredApplicationList(...)`.
 
-The matching behavior is as follows:
-
-* At least one supported prefixed field must be provided.
-* Non-tag fields are combined using AND semantics.
-* Multiple `t/` prefixes are combined using OR semantics.
-* Matching is case-insensitive and uses substring matching.
-* For optional fields such as email, website, and address, an empty value such as `e/` matches applications with no stored value.
-* For tags, `t/` matches applications with no tags.
-
 
 ### Archive state and filtered list views
 
@@ -645,8 +636,6 @@ Use case ends.
 ### Data Integrity
 - The application should validate all user inputs and reject invalid data with clear error messages without crashing.
 
-### Scalability
-- The application should remain functional and responsive with up to 1000 application entries stored.
 
 ---
 
