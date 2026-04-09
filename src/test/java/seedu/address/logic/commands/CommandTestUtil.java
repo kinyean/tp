@@ -63,8 +63,8 @@ public class CommandTestUtil {
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
-    public static final String INVALID_COMPANY_NAME_DESC = " " + PREFIX_NAME + "TikTok&"; // '&' not allowed in names
-    public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "Algorithm@Engineer"; // '@' not allowed in role
+    public static final String INVALID_COMPANY_NAME_DESC = " " + PREFIX_NAME + " "; // ' ' not allowed in names
+    public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + " "; // ' ' not allowed in role
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_WEBSITE_DESC = " " + PREFIX_WEBSITE; // empty string not allowed for websites
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
