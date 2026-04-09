@@ -9,7 +9,10 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+* This project is based on [se-edu/addressbook-level3](https://github.com/se-edu/addressbook-level3).
+* The UI is built with [JavaFX](https://openjfx.io/).
+* JSON storage is implemented using [Jackson](https://github.com/FasterXML/jackson).
+* Testing uses [JUnit 5](https://junit.org/junit5/) and [TestFX](https://github.com/TestFX/TestFX).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -72,7 +75,10 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/se-
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The UI consists of a `MainWindow` that is made up of parts such as `CommandBox`, `ResultDisplay`,
+`ApplicationListPanel`, `StatusBarFooter`, `HelpWindow`, `NotesWindow`, and `SummaryWindow`.
+All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the
+commonalities between classes that represent parts of the visible GUI.
 
 The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
 
@@ -81,7 +87,10 @@ The `UI` component,
 * executes user commands using the `Logic` component.
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+* depends on some classes in the `Model` component, as it displays `Application` objects residing in the `Model`.
+* responds to `UiAction` values returned in `CommandResult` to open secondary windows such as Help, Notes, and Summary.
+
+`MainWindow` also binds keyboard accelerators for menu actions, e.g. `F1` for Help and `F2` for Summary.
 
 ### Logic component
 
@@ -122,16 +131,27 @@ How the parsing works:
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores HireME data i.e., all `Application` objects (which are contained in a `UniqueApplicationList` object).
+* stores the currently displayed applications as a filtered list exposed as an unmodifiable `ObservableList<Application>` so that the UI updates automatically when the filtered list changes.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+* stores the currently selected application for notes viewing/editing in `selectedNotesApplication`.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
+An `Application` currently contains:
 
-<img src="images/BetterModelClassDiagram.png" width="450" />
+* identity fields: `companyName` and `role`
+* required tracking fields: `date` and `status`
+* optional reference fields: `email`, `website`, and `address`
+* additional state fields: `notes`, `isArchived`, and `tags`
 
-</div>
+`Model` also defines commonly used predicates:
+
+* `PREDICATE_SHOW_UNARCHIVED_APPLICATIONS`
+* `PREDICATE_SHOW_ARCHIVED_APPLICATIONS`
+* `PREDICATE_SHOW_ALL_APPLICATIONS`
+
+`ModelManager` keeps track of the current predicate so that commands such as `edit` and `unarchive`
+can refresh the list without unexpectedly changing the user’s current view.
 
 
 ### Storage component
@@ -141,7 +161,7 @@ The `Model` component,
 <img src="images/StorageClassDiagram.png" width="550" />
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
+* can save both application data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
@@ -153,95 +173,185 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 ## **Implementation**
 
-This section describes some noteworthy details on how certain features are implemented.
+This section describes noteworthy implementation details of features that are currently present in HireME.
+
+### Archive state and filtered list views
+
+Archive state is stored directly in `Application` as the boolean field `isArchived`.
+
+This affects multiple layers:
+
+* `Application` stores the archive flag as part of the model state.
+* `JsonAdaptedApplication` serializes `isArchived` to JSON and defaults missing values to `false` when reading older data files.
+* `Model` exposes `PREDICATE_SHOW_UNARCHIVED_APPLICATIONS` and `PREDICATE_SHOW_ARCHIVED_APPLICATIONS`.
+* `ModelManager` starts with the unarchived predicate by default, so archived applications are hidden from the normal view.
+
+`list` and `list archived` are implemented by `ListCommand` and `ListCommandParser`:
+
+* `list` applies `PREDICATE_SHOW_UNARCHIVED_APPLICATIONS`
+* `list archived` applies `PREDICATE_SHOW_ARCHIVED_APPLICATIONS`
+
+`archive INDEX` and `unarchive INDEX` replace the target `Application` with a new immutable `Application`
+instance whose `isArchived` value is toggled. This keeps the implementation consistent with the rest of the model,
+where edits are represented by replacing immutable objects rather than mutating them in place.
+
+One important design detail is that `ModelManager` stores the current filter predicate. This allows commands such as
+`edit`, `archive`, and `unarchive` to refresh the displayed list without accidentally resetting the current view.
+
+### Notes window flow
+
+HireME stores free-form notes directly in each `Application` using the `notes` field.
+
+The notes feature is implemented using three cooperating pieces:
+
+* `OpenCommand` selects an application from the currently displayed list and indicates whether notes should be shown
+  in view mode or edit mode.
+* `ModelManager` stores the selected application in `selectedNotesApplication`.
+* `MainWindow` reacts to the `UiAction` in `CommandResult` and opens `NotesWindow` in the appropriate mode.
+
+When the user saves notes from the notes window:
+
+1. `NotesWindow` calls back into `Logic`.
+2. `Logic` delegates to `Model#saveApplicationNotes`.
+3. `ModelManager#saveApplicationNotes` creates a replacement `Application` with updated notes.
+4. The replacement preserves the existing `isArchived` flag and other fields.
+
+This design keeps the note editor out of the command parser while still preserving a single source of truth for
+application data in the model.
+
+### Summary window flow
+
+The summary feature is implemented by `SummaryCommand`.
+
+When `summary` is executed:
+
+1. `SummaryCommand` retrieves all stored applications from the model.
+2. It computes counts for active applications only (`Pending`, `Offered`, `Rejected`) and separately counts archived
+   applications.
+3. It returns a `CommandResult` with `UiAction.SHOW_SUMMARY`.
+4. `MainWindow` opens or focuses `SummaryWindow` and passes the generated summary text to it.
+
+`MainWindow` also listens for changes in the filtered application list and refreshes the summary window while it is
+open. This keeps the summary display aligned with the latest in-memory data after commands modify HireME data.
+
+### UI action dispatch
+
+HireME uses `CommandResult` plus `UiAction` to decouple command execution from JavaFX window management.
+
+Commands remain responsible for domain logic only:
+
+* `HelpCommand` returns `UiAction.SHOW_HELP`
+* `SummaryCommand` returns `UiAction.SHOW_SUMMARY`
+* `OpenCommand` returns either `UiAction.SHOW_NOTE` or `UiAction.EDIT_NOTE`
+* `ExitCommand` returns `UiAction.EXIT`
+
+`MainWindow` interprets these actions and performs the actual UI work. This keeps command classes testable and avoids
+coupling them directly to JavaFX classes such as `Stage`.
 
 ### \[Proposed\] Undo/redo feature
 
+Undo/redo is not implemented in the current codebase yet, but it remains a possible future enhancement.
+The following design is therefore a proposal rather than a description of existing behavior.
+
 #### Proposed Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo
+history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the
+following operations:
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+* `VersionedAddressBook#commit()` - Saves the current HireME state in its history.
+* `VersionedAddressBook#undo()` - Restores the previous HireME state from its history.
+* `VersionedAddressBook#redo()` - Restores a previously undone HireME state from its history.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+These operations are exposed in the `Model` interface as `Model#commitAddressBook()`,
+`Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+Given below is an example usage scenario and how the undo/redo mechanism would behave at each step.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+Step 1. The user launches the application for the first time. `VersionedAddressBook` is initialized with the initial
+HireME state, and the `currentStatePointer` points to that single state.
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 
-Step 2. The user executes `delete 5` command to delete the 5th application in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes `delete 5` to delete the 5th application in HireME. The `delete` command calls
+`Model#commitAddressBook()`, causing the modified state after the command executes to be saved in
+`addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted state.
 
 ![UndoRedoState1](images/UndoRedoState1.png)
 
-Step 3. The user executes `add n/David …​` to add a new application. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 3. The user executes `add n/David ...` to add a new application. The `add` command also calls
+`Model#commitAddressBook()`, causing another modified state to be saved into `addressBookStateList`.
 
 ![UndoRedoState2](images/UndoRedoState2.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it
+will not call `Model#commitAddressBook()`, so the HireME state will not be saved into `addressBookStateList`.
 
 </div>
 
-Step 4. The user now decides that adding the application was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+Step 4. The user now decides that adding the application was a mistake, and decides to undo that action by executing
+the `undo` command. The `undo` command calls `Model#undoAddressBook()`, which shifts the
+`currentStatePointer` once to the left, pointing it to the previous state, and restores HireME to that state.
 
 ![UndoRedoState3](images/UndoRedoState3.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at
+index 0, pointing to the initial state, then there are no previous states to restore. The `undo` command uses
+`Model#canUndoAddressBook()` to check if this is the case. If so, it returns an error to the user rather than
+attempting to perform the undo.
 
 </div>
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+The following sequence diagram shows how an undo operation would go through the `Logic` component:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should
+end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
 </div>
 
-Similarly, how an undo operation goes through the `Model` component is shown below:
+Similarly, how an undo operation would go through the `Model` component is shown below:
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+The `redo` command does the opposite - it calls `Model#redoAddressBook()`, which shifts the
+`currentStatePointer` once to the right, pointing to the previously undone state, and restores HireME to that state.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at
+index `addressBookStateList.size() - 1`, pointing to the latest state, then there are no undone states to restore.
+The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it returns an error to the
+user rather than attempting to perform the redo.
 
 </div>
 
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 5. The user then decides to execute the command `list`. Commands that do not modify stored data, such as `list`,
+would usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus,
+`addressBookStateList` remains unchanged.
 
 ![UndoRedoState4](images/UndoRedoState4.png)
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since `currentStatePointer` is not
+pointing at the end of `addressBookStateList`, all states after `currentStatePointer` are purged. This matches the
+behavior of many desktop applications where making a new change invalidates the redo chain.
 
 ![UndoRedoState5](images/UndoRedoState5.png)
 
-The following activity diagram summarizes what happens when a user executes a new command:
+The following activity diagram summarizes what would happen when a user executes a new mutating command:
 
 <img src="images/CommitActivityDiagram.png" width="250" />
 
-#### Design considerations:
+#### Design considerations
 
 **Aspect: How undo & redo executes:**
 
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
+* **Alternative 1 (current choice):** Save the entire state as snapshots.
+  * Pros: Easy to implement and reason about.
   * Cons: May have performance issues in terms of memory usage.
 
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the application being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
+* **Alternative 2:** Each command knows how to undo/redo itself.
+  * Pros: Uses less memory in some cases, e.g. `delete` can store only the deleted application.
+  * Cons: Every mutating command needs explicit undo/redo logic, which increases implementation complexity.
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -479,8 +589,9 @@ Use case ends.
 
 Main Success Scenario:
 1. User requests to view help information (enters help).
-2. HireME displays a list of available commands and their formats (e.g., add, list, edit, delete, help) in the result box.
-3. User reads the command formats to learn/recall how to use the system.
+2. HireME opens the help window, or focuses it if it is already open.
+3. HireME displays the list of available commands and their formats in the help window.
+4. User reads the command formats to learn/recall how to use the system.
 Use case ends.
 
 ---
