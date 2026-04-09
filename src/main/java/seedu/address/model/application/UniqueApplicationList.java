@@ -57,7 +57,7 @@ public class UniqueApplicationList implements Iterable<Application> {
     public void setApplication(Application target, Application editedApplication) {
         requireAllNonNull(target, editedApplication);
 
-        int index = internalList.indexOf(target);
+        int index = findIndex(target);
         if (index == -1) {
             throw new ApplicationNotFoundException();
         }
@@ -133,6 +133,19 @@ public class UniqueApplicationList implements Iterable<Application> {
     @Override
     public String toString() {
         return internalList.toString();
+    }
+
+    /**
+     * Returns the index of the application with the same identity as {@code toFind},
+     * or -1 if no such application exists in the list.
+     */
+    private int findIndex(Application toFind) {
+        for (int i = 0; i < internalList.size(); i++) {
+            if (internalList.get(i).isSameApplication(toFind)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
