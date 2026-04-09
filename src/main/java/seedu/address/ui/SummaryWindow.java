@@ -19,6 +19,12 @@ public class SummaryWindow extends UiPart<Stage> {
 
     private static final Logger logger = LogsCenter.getLogger(SummaryWindow.class);
     private static final String FXML = "SummaryWindow.fxml";
+    private static final String COLOR_PENDING = "#FFA500";
+    private static final String COLOR_OFFERED = "#4CAF50";
+    private static final String COLOR_REJECTED = "#F44336";
+    private static final String COLOR_ARCHIVED = "#9E9E9E";
+    private static final String COLOR_DEFAULT = "white";
+    private static final int SUMMARY_WINDOW_WIDTH = 400;
 
     @FXML
     private TextFlow summaryMessage;
@@ -89,17 +95,16 @@ public class SummaryWindow extends UiPart<Stage> {
     private String getValueColor(String label) {
         switch (label.trim()) {
         case "Pending":
-            return "#FFA500";
+            return COLOR_PENDING;
         case "Offered":
-            return "#4CAF50";
-        case "Rejected":
-            return "#F44336";
         case "Success Rate":
-            return "#4CAF50";
+            return COLOR_OFFERED;
+        case "Rejected":
+            return COLOR_REJECTED;
         case "Archived":
-            return "#9E9E9E";
+            return COLOR_ARCHIVED;
         default:
-            return "white";
+            return COLOR_DEFAULT;
         }
     }
 
@@ -108,7 +113,7 @@ public class SummaryWindow extends UiPart<Stage> {
      */
     public void show() {
         logger.fine("Showing summary window.");
-        getRoot().setWidth(400);
+        getRoot().setWidth(SUMMARY_WINDOW_WIDTH);
         getRoot().show();
         getRoot().centerOnScreen();
     }

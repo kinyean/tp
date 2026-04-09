@@ -9,15 +9,18 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Status {
 
-    enum StatusType {
+    /**
+     * Represents the possible statuses of an application.
+     */
+    public enum StatusType {
         OFFERED,
         PENDING,
         REJECTED
     }
 
-    public static final String VALIDATION_REGEX = "(?i)Offered|Pending|Rejected";
     public static final String MESSAGE_CONSTRAINTS =
             "Status must be one of: Offered, Pending, or Rejected.";
+    public static final String VALIDATION_REGEX = "(?i)Offered|Pending|Rejected";
     public final StatusType value;
 
     /**
@@ -48,6 +51,13 @@ public class Status {
      */
     public static boolean isValidStatus(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns the StatusType enum value of this Status.
+     */
+    public StatusType getValue() {
+        return value;
     }
 
     @Override

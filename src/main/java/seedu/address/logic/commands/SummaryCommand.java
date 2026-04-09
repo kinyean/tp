@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.Model;
 import seedu.address.model.application.Application;
+import seedu.address.model.application.Status.StatusType;
 
 /**
  * Displays a summary of the application statistics.
@@ -18,10 +19,6 @@ public class SummaryCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows a summary of your applications.\n"
             + "Example: " + COMMAND_WORD;
-
-    private static final String STATUS_PENDING = "PENDING";
-    private static final String STATUS_OFFERED = "OFFERED";
-    private static final String STATUS_REJECTED = "REJECTED";
 
     private static final Logger logger = LogsCenter.getLogger(SummaryCommand.class);
 
@@ -37,9 +34,9 @@ public class SummaryCommand extends Command {
                 .filter(Application::isArchived)
                 .count();
         long total = applications.size() - archived;
-        long pending = countStatus(applications, STATUS_PENDING);
-        long offered = countStatus(applications, STATUS_OFFERED);
-        long rejected = countStatus(applications, STATUS_REJECTED);
+        long pending = countStatus(applications, StatusType.PENDING);
+        long offered = countStatus(applications, StatusType.OFFERED);
+        long rejected = countStatus(applications, StatusType.REJECTED);
 
         assert pending + offered + rejected == total
                 : "Status counts should sum to total: " + pending + "+" + offered + "+" + rejected + " != " + total;
@@ -57,13 +54,13 @@ public class SummaryCommand extends Command {
      * Counts the number of non-archived applications with the given status.
      *
      * @param applications List of all applications.
-     * @param status Status to filter by.
+     * @param statusType The {@code StatusType} to filter by.
      * @return Number of non-archived applications matching the status.
      */
-    private long countStatus(List<Application> applications, String status) {
+    private long countStatus(List<Application> applications, StatusType statusType) {
         return applications.stream()
                 .filter(a -> !a.isArchived())
-                .filter(a -> a.getStatus().toString().equalsIgnoreCase(status))
+                .filter(a -> a.getStatus().getValue() == statusType)
                 .count();
     }
 

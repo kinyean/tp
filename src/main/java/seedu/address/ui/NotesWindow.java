@@ -24,6 +24,8 @@ public class NotesWindow extends UiPart<Stage> {
 
     private static final Logger logger = LogsCenter.getLogger(NotesWindow.class);
     private static final String FXML = "NotesWindow.fxml";
+    private static final int NOTES_WINDOW_WIDTH = 500;
+    private static final int NOTES_WINDOW_HEIGHT = 400;
 
     private Function<String, Boolean> saveCallback;
     private boolean isEditMode;
@@ -47,10 +49,10 @@ public class NotesWindow extends UiPart<Stage> {
      */
     public NotesWindow(Stage root) {
         super(FXML, root);
-        root.setMinWidth(500);
-        root.setMinHeight(400);
-        root.setWidth(500);
-        root.setHeight(400);
+        root.setMinWidth(NOTES_WINDOW_WIDTH);
+        root.setMinHeight(NOTES_WINDOW_HEIGHT);
+        root.setWidth(NOTES_WINDOW_WIDTH);
+        root.setHeight(NOTES_WINDOW_HEIGHT);
     }
 
     /**
