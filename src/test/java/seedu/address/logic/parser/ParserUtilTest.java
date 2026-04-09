@@ -24,8 +24,8 @@ import seedu.address.model.application.Website;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
-    private static final String INVALID_NAME = "R@chel";
-    private static final String INVALID_ROLE = "Algorithm@Engineer";
+    private static final String INVALID_NAME = " ";
+    private static final String INVALID_ROLE = " ";
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";

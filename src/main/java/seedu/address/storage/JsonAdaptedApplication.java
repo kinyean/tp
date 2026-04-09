@@ -91,6 +91,17 @@ class JsonAdaptedApplication {
             applicationTags.add(tag.toModelType());
         }
 
+        final String modelNotes = notes == null ? "" : notes;
+        final boolean modelIsArchived = isArchived != null && isArchived;
+        final Set<Tag> modelTags = new HashSet<>(applicationTags);
+        return new Application(
+                parseCompanyName(), parseRole(), parseEmail(), parseWebsite(),
+                parseAddress(), parseDate(), parseStatus(), modelTags, modelNotes, modelIsArchived
+        );
+    }
+
+    /** Parses and validates the company name field. */
+    private CompanyName parseCompanyName() throws IllegalValueException {
         if (companyName == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
                     CompanyName.class.getSimpleName()));
@@ -98,71 +109,73 @@ class JsonAdaptedApplication {
         if (!CompanyName.isValidCompanyName(companyName)) {
             throw new IllegalValueException(CompanyName.MESSAGE_CONSTRAINTS);
         }
-        final CompanyName modelName = new CompanyName(companyName);
+        return new CompanyName(companyName);
+    }
 
+    /** Parses and validates the role field. */
+    private Role parseRole() throws IllegalValueException {
         if (role == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Role.class.getSimpleName()));
         }
         if (!Role.isValidRole(role)) {
             throw new IllegalValueException(Role.MESSAGE_CONSTRAINTS);
         }
-        final Role modelRole = new Role(role);
+        return new Role(role);
+    }
 
-        final Email modelEmail;
+    /** Parses and validates the optional email field. Returns null if not provided. */
+    private Email parseEmail() throws IllegalValueException {
         if (email == null) {
-            modelEmail = null;
-        } else {
-            if (!Email.isValidEmail(email)) {
-                throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
-            }
-            modelEmail = new Email(email);
+            return null;
         }
+        if (!Email.isValidEmail(email)) {
+            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
+        }
+        return new Email(email);
+    }
 
-        final Website modelWebsite;
+    /** Parses and validates the optional website field. Returns null if not provided. */
+    private Website parseWebsite() throws IllegalValueException {
         if (website == null) {
-            modelWebsite = null;
-        } else {
-            if (!Website.isValidWebsite(website)) {
-                throw new IllegalValueException(Website.MESSAGE_CONSTRAINTS);
-            }
-            modelWebsite = new Website(website);
+            return null;
         }
+        if (!Website.isValidWebsite(website)) {
+            throw new IllegalValueException(Website.MESSAGE_CONSTRAINTS);
+        }
+        return new Website(website);
+    }
 
-        final Address modelAddress;
+    /** Parses and validates the optional address field. Returns null if not provided. */
+    private Address parseAddress() throws IllegalValueException {
         if (address == null) {
-            modelAddress = null;
-        } else {
-
-            if (!Address.isValidAddress(address)) {
-                throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
-            }
-            modelAddress = new Address(address);
+            return null;
         }
+        if (!Address.isValidAddress(address)) {
+            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
+        }
+        return new Address(address);
+    }
 
+    /** Parses and validates the date field. */
+    private Date parseDate() throws IllegalValueException {
         if (date == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Date.class.getSimpleName()));
         }
         if (!Date.isValidDate(date)) {
             throw new IllegalValueException(Date.MESSAGE_CONSTRAINTS);
         }
-        final Date modelDate = new Date(date);
+        return new Date(date);
+    }
 
+    /** Parses and validates the status field. */
+    private Status parseStatus() throws IllegalValueException {
         if (status == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Status.class.getSimpleName()));
         }
         if (!Status.isValidStatus(status)) {
             throw new IllegalValueException(Status.MESSAGE_CONSTRAINTS);
         }
-        final Status modelStatus = new Status(status);
-
-        final String modelNotes = notes == null ? "" : notes;
-        final boolean modelIsArchived = isArchived != null && isArchived;
-
-        final Set<Tag> modelTags = new HashSet<>(applicationTags);
-        return new Application(
-                modelName, modelRole, modelEmail, modelWebsite, modelAddress, modelDate, modelStatus,
-                modelTags, modelNotes, modelIsArchived
-        );
+        return new Status(status);
     }
 
 }

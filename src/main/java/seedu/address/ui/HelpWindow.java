@@ -58,17 +58,26 @@ public class HelpWindow extends UiPart<Stage> {
                 title(),
                 body("Track your internship applications using the commands below.\n\n")
         );
+        helpMessage.getChildren().addAll(header("Command format"),
+                body(
+                        "\n- Words in UPPER_CASE are inputs you provide (e.g. n/Google)\n"
+                                + "- [ ] indicates optional fields\n"
+                                + "- ... means the field can be repeated\n"
+                                + "- Parameters can be in any order\n"
+                                + "- Duplicate fields (except tags) are not allowed\n\n"
+                ));
 
         helpMessage.getChildren().addAll(section("add",
                 "Add a new application.",
                 "add n/COMPANY_NAME r/ROLE d/DATE s/STATUS [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [t/TAG]...",
                 "Status must be Pending, Offered, or Rejected. Date must be DD-MM-YYYY.",
-                "add n/Google r/Software Engineer d/19-02-2026 s/Pending e/hr@gmail.com"
+                "add n/Google r/Software Engineer d/19-02-2026 s/Pending e/hr@gmail.com t/round1 t/incoming"
         ));
 
         helpMessage.getChildren().addAll(section("edit",
                 "Update an application by its list number.",
-                "edit INDEX [n/COMPANY_NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [d/DATE] [s/STATUS] [t/TAG]...",
+                "edit INDEX [n/COMPANY_NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] "
+                        + "[a/ADDRESS] [d/DATE] [s/STATUS] [t/TAG]...",
                 "At least one field must be provided.",
                 "edit 1 r/Backend Developer Intern e/johndoe@gmail.com"
         ));
@@ -104,13 +113,8 @@ public class HelpWindow extends UiPart<Stage> {
         helpMessage.getChildren().addAll(section("open",
                 "Open the notes for an application.",
                 "open INDEX [m/CHOICE_OF_EDIT]",
-                "m/ must be true or false. Defaults to false (view only).",
+                "m/true opens edit mode. m/false opens view-only mode. Defaults to false (view only)",
                 "open 1 m/true"
-        ));
-
-        helpMessage.getChildren().addAll(section("summary",
-                "Show a summary of application statistics.",
-                null, null, null
         ));
 
         helpMessage.getChildren().addAll(section("list",
@@ -118,6 +122,11 @@ public class HelpWindow extends UiPart<Stage> {
                 "list [archived]",
                 "Use list archived to show only archived applications.",
                 "list archived"
+        ));
+
+        helpMessage.getChildren().addAll(section("summary",
+                "Show a summary of application statistics.",
+                null, null, null
         ));
 
         helpMessage.getChildren().addAll(section("clear",
