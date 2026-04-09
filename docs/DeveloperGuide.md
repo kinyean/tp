@@ -9,7 +9,13 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+* This project is adapted from [AddressBook-Level3](https://se-education.org/addressbook-level3/) by the [SE-EDU initiative](https://se-education.org).
+* Some diagrams and documentation structure in this Developer Guide were adapted from the original [AB3 Developer Guide](https://se-education.org/addressbook-level3/DeveloperGuide.html).
+* The project uses the [JavaFX](https://openjfx.io/) library for the graphical user interface.
+* The project uses [Jackson](https://github.com/FasterXML/jackson) for JSON serialization and deserialization.
+* The project uses [JUnit 5](https://junit.org/junit5/) for automated testing.
+* The project uses [TestFX](https://github.com/TestFX/TestFX) and [Monocle](https://github.com/TestFX/Monocle) for GUI testing.
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -23,7 +29,7 @@ Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
 <div markdown="span" class="alert alert-primary">
 
-:bulb: **Tip:** The `.puml` files used to create diagrams are in this document `docs/diagrams` folder. Refer to the [_PlantUML Tutorial_ at se-edu/guides](https://se-education.org/guides/tutorials/plantUml.html) to learn how to create and edit diagrams.
+:bulb: **Tip:** The `.puml` files used to create diagrams are in this document `docs/diagrams` folder.
 </div>
 
 ### Architecture
