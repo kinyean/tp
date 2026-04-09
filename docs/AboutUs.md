@@ -15,7 +15,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[github](http://github.com/kinyean)]
 
-* Role: Grunt
+* Role: Developer
 * Responsibilities: A little bit of everything
 
 ### Guo Keming
