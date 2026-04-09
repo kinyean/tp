@@ -996,7 +996,7 @@ Expected:
     * number of archived applications
 
 2. Test case:
-   Open the same feature from the menu bar.
+   Press `F2`.
 
 Expected:
 * The same summary window is shown.
