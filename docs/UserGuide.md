@@ -58,9 +58,9 @@ Follow these steps to set up and start using HireME:
      >       If Java is installed, you should see output like:
      >  
      >       `java version "17.x.x"`
-     > <br><br>
-     >     2. If the version is **17 or higher**, you are ready to proceed. 
-     >     3. If Java is not installed or the version is lower than 17, you can follow installation guides [here](https://se-education.org/guides/tutorials/javaInstallation.html).
+     >   <br><br>
+     >     
+     >  3. If Java is not installed or the version is not 17, you can follow installation guides [here](https://se-education.org/guides/tutorials/javaInstallation.html).
      > (Mac, Windows, Linux)
 
     <br><br>
@@ -89,7 +89,7 @@ Follow these steps to set up and start using HireME:
    >    `java -jar hireME.jar`
 
      <br><br>
-5.  A [GUI](#gui-) similar to the below should appear in a few seconds. Note how the app contains some sample data.
+5.  A [GUI](#gui) similar to the below should appear in a few seconds. Note how the app contains some sample data.
     <br><br>
   ![Ui](images/SampleGUI.png)
     <br><br>
@@ -160,8 +160,8 @@ Add a new application so you can keep track of where you have applied and what s
 
 | Parameter       | Prefix | Required | Constraints                                 | Parameter Example       |
 |-----------------|--------|----------|---------------------------------------------|-------------------------|
-| Company Name    | `n/`   | Yes      | Alphanumeric characters and spaces only     | `n/Google`              |
-| Role            | `r/`   | Yes      | Alphanumeric characters and spaces only     | `r/SWE Intern`          |
+| Company Name    | `n/`   | Yes      | Cannot be empty                             | `n/Google`              |
+| Role            | `r/`   | Yes      | Cannot be empty                             | `r/SWE Intern`          |
 | Date (Glossary) | `d/`   | Yes      | Must be in `DD-MM-YYYY` format              | `d/15-03-2026`          |
 | Status          | `s/`   | Yes      | Must be `Offered`, `Pending`, or `Rejected` | `s/Pending`             |
 | Tag             | `t/`   | Optional | Alphanumeric only, no spaces                | `t/govtech` `t/fintech` |
@@ -186,7 +186,7 @@ Add a new application so you can keep track of where you have applied and what s
   Adds an application with tags for easier filtering later. Note that this `add` command is **not in order**.
 <br><br>
 
-<br><br>
+
 
 ---
 ## Editing an application : `edit`
@@ -201,8 +201,8 @@ Edits an existing application in HireME. Use this when you need to update detail
 | Parameter    | Prefix | Required | Constraints                                                              | Result                         |
 |--------------|--------|----------|--------------------------------------------------------------------------|--------------------------------|
 | Index        | —      | Yes      | Must be a positive integer and within the bounds of the current list     | Edits the position in the list |
-| Company Name | `n/`   | Optional | Alphanumeric characters and <br/>spaces only                             | Updated company name           |
-| Role         | `r/`   | Optional | Alphanumeric characters and <br/>spaces only                             | Updated job role               |
+| Company Name | `n/`   | Optional | Cannot be empty                                                          | Updated company name           |
+| Role         | `r/`   | Optional | Cannot be empty                                                          | Updated job role               |
 | Date         | `d/`   | Optional | Must be in DD-MM-YYYY format                                             | Updated application date       |
 | Status       | `s/`   | Optional | Must be Offered, Pending, or Rejected                                    | Updated application status     |
 | Tag          | `t/`   | Optional | Alphanumeric only, no spaces, <br/>_Leave this blank to clear the field_ | Replaces all existing tags     |
@@ -253,8 +253,14 @@ Delete an application you no longer need from HireME.
 
 <br><br>
 #### Valid Examples:
-* `list` followed by `delete 2` deletes the 2nd application in the list.
-* `find n/Google` followed by `delete 1` deletes the 1st application in the results of the `find` command.
+* `list` followed by `delete 2` 
+
+Deletes the 2nd application in the list.
+<br><br>
+
+* `find n/Google` followed by `delete 1` 
+
+Deletes the 1st application in the results of the `find` command.
 
 <br><br>
 
@@ -462,12 +468,12 @@ Open or update an application's notes to review  important details from your app
 
 > 💡 **Tip:** If the mode is omitted, the open command defaults to view mode. E.g. `open 1` opens the notes of the 1st application in view mode.
 
-### Notes in View Mode: open INDEX m/False
+#### Notes in View Mode: `open INDEX m/False`
 The Notes window will pop up, showing your notes for the application at the specified index. You are unable to edit or save the notes in this mode.
 
 ![Notes in View Mode](images/Notes_viewmode.png)
 <br><br>
-### Notes in Edit Mode: open INDEX m/True
+#### Notes in Edit Mode: `open INDEX m/True`
 The Notes window will pop up, showing your notes for the application at the specified index. You are able to modify your notes in this mode. The changes will only be saved if you click the **_'Save'_** button.
 
 ![Notes in View Mode](images/Notes_editmode.png)
@@ -486,7 +492,7 @@ The Notes window will pop up, showing your notes for the application at the spec
 
 #### Troubleshoot - Notes
 If an application is deleted with the Notes window open, your notes for the nonexistent application will not save.
-The **_'Save'_** button will indicate a warning notification that the notes window failed to save.
+The **_'Save'_** button will indicate a warning notification that the notes window failed to save and will **automatically close shortly after**.
 
 ![Notes Save Failed](images/Notes_savefailed.png)
 
@@ -507,6 +513,7 @@ See an overview of your job applications and track your progress at a glance in 
 
 ![summary](images/Summary_small.png)
 
+<br>
 
 | Field              | What it shows                                                                             |
 |--------------------|-------------------------------------------------------------------------------------------|
@@ -517,7 +524,7 @@ See an overview of your job applications and track your progress at a glance in 
 | Success Rate       | Percentage of applications that resulted in an offer<br/>(Excludes Archived Applications) |
 | Archived           | Number of applications that have been archived                                            |
 
-
+<br><br>
 
 ---
 
@@ -552,7 +559,7 @@ Clears all application entries from HireME. Useful if you want a fresh start (e.
 
 Exits the program.
 
-Format: `exit`
+#### Format: `exit`
 <br><br>
 
 ---
@@ -569,20 +576,22 @@ HireME data is saved automatically as a JSON file `[JAR file location]/data/Hire
 > ⚠ **Warning:**
 > If your changes to the data file make its format invalid, HireME will discard all data and start with an empty data file at the next run. It is recommended to take a backup of the file before editing it. Furthermore, certain edits can cause HireME to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Only edit the data file if you are confident you can update it correctly.
 
+<br><br>
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
 
-**Q**: How do I transfer my data to another Computer?<br>
+**Q: How do I transfer my data to another Computer?<br>**
 **A**: Install HireME on the other computer and overwrite the empty data file it creates with the file that contains the data from your previous HireME home folder.
 
-**Q**: Can I add two applications to the same company?<br>
+**Q: Can I add two applications to the same company?<br>**
 **A**: Yes, as long as the **role** and/or **company name** is different. HireME identifies duplicates by the combination of company name and role.
 
-**Q**: Is the email field mandatory?<br>
+**Q: Is the email field mandatory?<br>**
 **A**: No, email is optional. You can always add it later with the `edit` command.
 
-**Q**: What statuses can I use?<br>
+**Q: What statuses can I use?<br>**
 **A**: The three supported statuses are `Offered`, `Pending`, and `Rejected`. They are case-insensitive, so `pending`, `PENDING`, and `Pending` all work.
 
 **Q: Why does my `find` command not return expected results?**  
@@ -604,10 +613,12 @@ Example: `find n/Grab n/Google` searches only for `Google`.
 - the application was archived
 
 **Q: How is the success rate calculated?**  
-**A:** It is based on applications with a final outcome (`Offered` or `Rejected`). Archived applications are excluded.
+**A:** It is based on applications with a final outcome (`Offered` or `Rejected`). Specifically `Offered` over the total number of `Offered` and `Rejected` outcomes. Archived applications are excluded.
 
 **Q: Can I edit multiple fields at once?**  
 **A:** Yes. You can include multiple prefixes in a single `edit` command to update several fields at once.
+
+<br><br>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -617,6 +628,7 @@ Example: `find n/Grab n/Google` searches only for `Google`.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 3. **If you use the same prefix multiple times** in the `find` command (e.g. `n/Grab n/Google`), only the last value is used. The remedy is to use different prefixes or run separate searches instead.
 
+<br><br>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -636,7 +648,8 @@ Example: `find n/Grab n/Google` searches only for `Google`.
 | **Clear**     | `clear`                                                                                                | —                                                                                                                   |
 | **Help**      | `help`                                                                                                 | —                                                                                                                   |
 | **Exit**      | `exit`                                                                                                 | —                                                                                                                   |
-                                                                                                                |
+
+<br><br>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -646,30 +659,23 @@ Example: `find n/Grab n/Google` searches only for `Google`.
 ### Java 17
 A version of Java required to run HireME. It provides the environment that allows your computer to open and run the application.
 
-
-### GUI 
+### GUI
 Graphical User Interface — the visual interface of the app (windows, buttons, panels).
-
 
 ### Index 
 The position number of an application in the displayed list.
 
-
 ### Application Status
 The current stage of an application (`Pending`, `Rejected`, or `Offered`).
-
 
 ### Tag
 A label used to organise applications (e.g. `remote`, `tech`, `archived`).
 
-
 ### Field
 A category of information in a command, such as `n/NAME` or `r/ROLE`.
 
-
 ### Prefix
 A short label (e.g. `n/`, `r/`, `t/`) used to indicate the type of information being entered.
-
 
 ### Keyword
 The value entered after a prefix.  

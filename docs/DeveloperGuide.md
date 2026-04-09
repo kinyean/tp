@@ -589,8 +589,8 @@ Use case ends.
 
 Main Success Scenario:
 1. User requests to view help information (enters help).
-2. HireME opens the help window, or focuses it if it is already open.
-3. HireME displays the list of available commands and their formats in the help window.
+2. HireME opens the help window.
+3. HireME displays all available commands and their formats in the help window.
 4. User reads the command formats to learn/recall how to use the system.
 Use case ends.
 
