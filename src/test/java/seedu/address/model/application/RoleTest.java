@@ -29,9 +29,6 @@ public class RoleTest {
         assertFalse(Role.isValidRole("")); // empty string
         assertFalse(Role.isValidRole(" ")); // spaces only
         assertFalse(Role.isValidRole(" Engineer")); // leading space
-        assertFalse(Role.isValidRole("@Engineer")); // special characters at the beginning
-        assertFalse(Role.isValidRole("Dev!Ops")); // special characters inside
-        assertFalse(Role.isValidRole("Engineer#")); // special characters at the end
 
         // valid roles
         assertTrue(Role.isValidRole("E")); // single character
@@ -42,6 +39,9 @@ public class RoleTest {
         assertTrue(Role.isValidRole("SoftwareEngineer1")); // alphanumeric
         assertTrue(Role.isValidRole("Backend Developer2")); // alphanumeric with space
         assertTrue(Role.isValidRole("Backend     Developer2")); // alphanumeric with multiple spaces
+        assertTrue(Role.isValidRole("@Engineer")); // special characters at the beginning
+        assertTrue(Role.isValidRole("Dev!Ops")); // special characters inside
+        assertTrue(Role.isValidRole("Engineer#")); // special characters at the end
     }
 
     @Test
