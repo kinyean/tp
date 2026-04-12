@@ -39,6 +39,8 @@ public class MainWindow extends UiPart<Stage> {
     private NotesWindow notesWindow;
     private SummaryWindow summaryWindow;
 
+    private boolean isAutoRefreshingSummary = false;
+
     @FXML
     private StackPane commandBoxPlaceholder;
 
@@ -141,9 +143,12 @@ public class MainWindow extends UiPart<Stage> {
 
     private void refreshSummary() {
         try {
+            isAutoRefreshingSummary = true;
             executeCommand("summary");
         } catch (CommandException | ParseException e) {
             logger.info("Failed to auto-refresh summary: " + e.getMessage());
+        } finally {
+            isAutoRefreshingSummary = false;
         }
     }
 
@@ -185,6 +190,13 @@ public class MainWindow extends UiPart<Stage> {
     public void handleSummary(String summaryText) {
         summaryWindow.setContent(summaryText);
         summaryWindow.show();
+    }
+
+    /**
+     * Refreshes the summary window content without bringing it to the front.
+     */
+    public void refreshSummaryContent(String summaryText) {
+        summaryWindow.setContent(summaryText);
     }
 
     /**
@@ -264,7 +276,11 @@ public class MainWindow extends UiPart<Stage> {
         }
 
         if (commandResult.isShowSummary()) {
-            handleSummary(commandResult.getFeedbackToUser());
+            if (isAutoRefreshingSummary) {
+                refreshSummaryContent(commandResult.getFeedbackToUser());
+            } else {
+                handleSummary(commandResult.getFeedbackToUser());
+            }
         }
 
         if (commandResult.isShowNote()) {

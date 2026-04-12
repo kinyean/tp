@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -55,15 +54,10 @@ public class HelpWindow extends UiPart<Stage> {
      */
     @FXML
     public void initialize() {
+        helpMessage.prefWidthProperty().bind(scrollPane.widthProperty().subtract(30));
         helpMessage.getChildren().clear();
-        TextField userGuideLink = new TextField("https://ay2526s2-cs2103t-w11-3.github.io/tp/UserGuide.html");
-        userGuideLink.setEditable(false);
-        userGuideLink.setFocusTraversable(false);
-        userGuideLink.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
-        userGuideLink.prefWidthProperty().bind(scrollPane.widthProperty().subtract(40));
         helpMessage.getChildren().addAll(
                 title(),
-                body("For detailed info, check the user guide: \n"), userGuideLink,
                 body("Track your internship applications using the commands below.\n\n")
         );
         helpMessage.getChildren().addAll(header("Command format"),
@@ -72,11 +66,7 @@ public class HelpWindow extends UiPart<Stage> {
                                 + "- [ ] indicates optional fields\n"
                                 + "- ... means the field can be repeated\n"
                                 + "- Parameters can be in any order\n"
-                                + "- Leave a space between each Parameter\n"
-                                + "- Duplicate fields (except tags) are not allowed\n"
-                                + "- Special characters (including emojis and invisible spaces such as zero-width "
-                                + "spaces) are allowed, but they may cause parsing issues and should be used with"
-                                + " caution.\n\n"
+                                + "- Duplicate fields (except tags) are not allowed\n\n"
                 ));
 
         helpMessage.getChildren().addAll(section("add",
@@ -265,7 +255,7 @@ public class HelpWindow extends UiPart<Stage> {
         Stage stage = getRoot();
 
         stage.setWidth(HELP_WINDOW_WIDTH);
-        stage.setWidth(HELP_WINDOW_HEIGHT);
+        stage.setHeight(HELP_WINDOW_HEIGHT);
 
         if (!stage.isShowing()) {
             stage.show();
