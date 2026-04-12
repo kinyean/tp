@@ -113,9 +113,17 @@ public class SummaryWindow extends UiPart<Stage> {
      */
     public void show() {
         logger.fine("Showing summary window.");
-        getRoot().setWidth(SUMMARY_WINDOW_WIDTH);
-        getRoot().show();
-        getRoot().centerOnScreen();
+        Stage stage = getRoot();
+
+        stage.setWidth(SUMMARY_WINDOW_WIDTH);
+
+        if (!stage.isShowing()) {
+            stage.show();
+        }
+
+        stage.setIconified(false);
+        stage.toFront();
+        stage.requestFocus();
     }
 
     /**

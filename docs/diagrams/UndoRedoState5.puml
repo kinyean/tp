@@ -7,9 +7,9 @@ skinparam ClassBackgroundColor #FFFFAA
 title After command "clear"
 
 package States <<rectangle>> {
-    class State1 as "<u>ab0:AddressBook</u>"
-    class State2 as "<u>ab1:AddressBook</u>"
-    class State3 as "<u>ab3:AddressBook</u>"
+    class State1 as "<u>hm0:HireME</u>"
+    class State2 as "<u>hm1:HireME</u>"
+    class State3 as "<u>hm2:HireME</u>"
 }
 
 State1 -[hidden]right-> State2
@@ -18,5 +18,5 @@ State2 -[hidden]right-> State3
 class Pointer as "Current State" #FFFFFF
 
 Pointer -up-> State3
-note right on link: State ab2 deleted.
+note right on link : Previous hm2 purged\nand replaced by new state.
 @end

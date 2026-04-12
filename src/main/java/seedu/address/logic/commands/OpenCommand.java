@@ -20,7 +20,7 @@ public class OpenCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Opens the notes written during the internship application process.\n"
-            + "Parameters: INDEX (must be a positive integer) "
+            + "Parameters: INDEX (must be a positive integer and within bounds of the current list) "
             + "[" + PREFIX_MODIFY + "CHOICE_OF_EDIT] (must be true or false, defaults to false)";
 
     public static final String MESSAGE_SUCCESS_WITH_EDIT = "Editing application notes: %1$s";

@@ -211,8 +211,15 @@ public class NotesWindow extends UiPart<Stage> {
      */
     public void show() {
         logger.fine("Showing notes window.");
-        getRoot().show();
-        getRoot().centerOnScreen();
+        Stage stage = getRoot();
+
+        if (!stage.isShowing()) {
+            stage.show();
+        }
+
+        stage.setIconified(false);
+        stage.toFront();
+        stage.requestFocus();
     }
 
     /**

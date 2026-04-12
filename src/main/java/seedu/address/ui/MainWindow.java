@@ -164,11 +164,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     public void handleHelp() {
-        if (!helpWindow.isShowing()) {
-            helpWindow.show();
-        } else {
-            helpWindow.focus();
-        }
+        helpWindow.show();
     }
 
     /**
@@ -188,11 +184,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     public void handleSummary(String summaryText) {
         summaryWindow.setContent(summaryText);
-        if (!summaryWindow.isShowing()) {
-            summaryWindow.show();
-        } else {
-            summaryWindow.focus();
-        }
+        summaryWindow.show();
     }
 
     /**
@@ -201,11 +193,7 @@ public class MainWindow extends UiPart<Stage> {
     private void handleShowNotes() {
         seedu.address.model.application.Application app = logic.getSelectedNotesApplication();
         notesWindow.setViewMode(app.getNotes(), app.getCompanyName().toString());
-        if (!notesWindow.isShowing()) {
-            notesWindow.show();
-        } else {
-            notesWindow.focus();
-        }
+        notesWindow.show();
     }
 
     /**
@@ -219,11 +207,7 @@ public class MainWindow extends UiPart<Stage> {
                 app.getCompanyName().toString()
         );
 
-        if (!notesWindow.isShowing()) {
-            notesWindow.show();
-        } else {
-            notesWindow.focus();
-        }
+        notesWindow.show();
     }
 
     void show() {
