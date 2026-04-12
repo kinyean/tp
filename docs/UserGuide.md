@@ -167,16 +167,16 @@ Recording your applications early helps you avoid losing track of follow-ups and
 ![Application](images/Application.png)
 <br><br>
 
-| Parameter    | Prefix | Required | Constraints                                      | Parameter Example       |
-|--------------|--------|----------|--------------------------------------------------|-------------------------|
-| Company Name | `n/`   | Yes      | Must not be blank (See warning for rare cases)   | `n/Google`              |
-| Role         | `r/`   | Yes      | Must not be blank (See warning for rare cases)   | `r/SWE Intern`          |
-| Date         | `d/`   | Yes      | Must be a valid calendar date in `DD-MM-YYYY` format | `d/15-03-2026`      |
-| Status       | `s/`   | Yes      | Must be `Offered`, `Pending`, or `Rejected` (case-insensitive) | `s/Pending` |
-| Email        | `e/`   | Optional | Must follow email format                         | `e/hr@google.com`       |
-| Website      | `w/`   | Optional | Must follow website format                       | `w/https://google.com`  |
-| Address      | `a/`   | Optional | Must not be blank (See warning for rare cases)   | `a/Singapore`           |
-| Tag          | `t/`   | Optional | Alphanumeric only, no spaces                     | `t/govtech` `t/fintech` |
+| Parameter    | Prefix | Required | Constraints                                                                                | Parameter Example |
+|--------------|--------|----------|--------------------------------------------------------------------------------------------|-----------------|
+| Company Name | `n/`   | Yes      | Printable characters only, must not start with a space                                     | `n/Google`      |
+| Role         | `r/`   | Yes      | Printable characters only, must not start with a space                                     | `r/SWE Intern`  |
+| Date         | `d/`   | Yes      | Must be a valid calendar date in `DD-MM-YYYY` format                                       | `d/15-03-2026`  |
+| Status       | `s/`   | Yes      | Must be `Offered`, `Pending`, or `Rejected` (case-insensitive)                             | `s/Pending` |
+| Email        | `e/`   | Optional | Must follow email format                                                                   | `e/hr@google.com` |
+| Website      | `w/`   | Optional | Must follow website format. `https://` will be added automatically if no protocol is given | `w/google.com`  |
+| Address      | `a/`   | Optional | Must not be blank (See warning for rare cases)                                             | `a/Singapore`   |
+| Tag          | `t/`   | Optional | Alphanumeric only, no spaces, max 20 characters                                            | `t/govtech` `t/fintech` |
 
 
 > ⚠ **Warning:** Two applications with the same `Company Name` and `Role` are not allowed. (Case-insensitive) 
@@ -427,6 +427,8 @@ Archive an application to remove it from your main list while keeping it availab
 > 💡 **Tip:** The current view is preserved after archiving. In the default `list` view, the archived application disappears because it is no longer active.
 
 > 💡 **Tip:** You can view archived applications using the [`list archived` command](#listing-all-applications-list).
+
+> 💡 **Note:** Archiving an already-archived application or unarchiving a non-archived application will show a message instead of an error.
 
 <br><br>
 
