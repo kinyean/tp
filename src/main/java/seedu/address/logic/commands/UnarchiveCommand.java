@@ -20,7 +20,7 @@ public class UnarchiveCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Unarchives the application identified by the index number used in the displayed application list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: INDEX (must be a positive integer and within bounds of the current list)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_UNARCHIVE_APPLICATION_SUCCESS = "Unarchived Application: %1$s";

@@ -20,7 +20,7 @@ public class ArchiveCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Archives the application identified by the index number used in the displayed application list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Parameters: INDEX (must be a positive integer and within bounds of the current list)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_ARCHIVE_APPLICATION_SUCCESS = "Archived Application: %1$s";

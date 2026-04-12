@@ -22,6 +22,8 @@ public class HelpWindow extends UiPart<Stage> {
     private static final String SUB_TITLE = "#E6E6E6"; // main text
     private static final String TEXT = "#A0A0A0"; // secondary text
     private static final String CODE = "#2A2A2A"; // code background
+    private static final int HELP_WINDOW_WIDTH = 800;
+    private static final int HELP_WINDOW_HEIGHT = 750;
 
     @FXML
     private TextFlow helpMessage;
@@ -86,44 +88,49 @@ public class HelpWindow extends UiPart<Stage> {
 
         helpMessage.getChildren().addAll(section("edit",
                 "Update an application by its list number.",
-                "edit INDEX [n/COMPANY_NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] "
-                        + "[a/ADDRESS] [d/DATE] [s/STATUS] [t/TAG]...",
-                "At least one field must be provided.",
+                "edit INDEX FIELD [FIELD]...",
+                "INDEX must be a positive integer and within bounds of the current list. "
+                        + "At least one field must be provided. Fields: n/COMPANY_NAME, r/ROLE, e/EMAIL, w/WEBSITE, "
+                        + "a/ADDRESS, d/DATE, s/STATUS, t/TAG.",
                 "edit 1 r/Backend Developer Intern e/johndoe@gmail.com"
         ));
 
         helpMessage.getChildren().addAll(section("delete",
                 "Remove an application by its list number.",
                 "delete INDEX",
-                null,
+                "INDEX must be a positive integer and within bounds of the current list.",
                 "delete 1"
         ));
 
         helpMessage.getChildren().addAll(section("find",
                 "Find applications by field (case-insensitive, partial match).",
-                "find [n/NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [d/DATE] [s/STATUS] [t/TAG]...",
-                "At least one search field must be provided.",
+                "find FIELD [FIELD]...",
+                "At least one search field must be provided. Fields: n/NAME, r/ROLE, e/EMAIL, w/WEBSITE, "
+                        + "a/ADDRESS, d/DATE, s/STATUS, t/TAG.",
                 "find n/Google r/Backend Developer s/Pending"
         ));
 
         helpMessage.getChildren().addAll(section("archive",
                 "Archive an application from the current list.",
                 "archive INDEX",
-                "Archived applications are hidden from the normal list.",
+                "INDEX must be a positive integer and within bounds of the current list. "
+                        + "Archived applications are hidden from the normal list.",
                 "archive 1"
         ));
 
         helpMessage.getChildren().addAll(section("unarchive",
                 "Restore an application from the archived list.",
                 "unarchive INDEX",
-                "Use command 'list archived' first, then unarchive the shown index.",
+                "INDEX must be a positive integer and within bounds of the current list. "
+                        + "Use command 'list archived' first, then unarchive the shown index.",
                 "unarchive 1"
         ));
 
         helpMessage.getChildren().addAll(section("open",
                 "Open the notes for an application.",
                 "open INDEX [m/CHOICE_OF_EDIT]",
-                "m/true opens edit mode. m/false opens view-only mode. Defaults to false (view only)",
+                "INDEX must be a positive integer and within bounds of the current list. "
+                        + "m/true opens edit mode. m/false opens view-only mode. Defaults to false (view only)",
                 "open 1 m/true"
         ));
 
@@ -255,10 +262,18 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public void show() {
         logger.fine("Showing help page about the application.");
-        getRoot().setWidth(800);
-        getRoot().setHeight(750);
-        getRoot().show();
-        getRoot().centerOnScreen();
+        Stage stage = getRoot();
+
+        stage.setWidth(HELP_WINDOW_WIDTH);
+        stage.setWidth(HELP_WINDOW_HEIGHT);
+
+        if (!stage.isShowing()) {
+            stage.show();
+        }
+
+        stage.setIconified(false);
+        stage.toFront();
+        stage.requestFocus();
     }
 
     /**
