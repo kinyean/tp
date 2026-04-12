@@ -30,6 +30,7 @@ public class NotesWindow extends UiPart<Stage> {
 
     private Function<String, NotesSaveStatus> saveCallback;
     private boolean isEditMode;
+    private PauseTransition currentPause;
 
     @FXML
     private ScrollPane viewPane;
@@ -67,6 +68,7 @@ public class NotesWindow extends UiPart<Stage> {
      * Sets up the window in read-only mode displaying the given notes.
      */
     public void setViewMode(String notes, String companyName) {
+        cancelPendingPause();
         isEditMode = false;
         updateTitle(companyName);
 
@@ -85,11 +87,11 @@ public class NotesWindow extends UiPart<Stage> {
      * Sets up the window in edit mode with the given notes and save callback.
      */
     public void setEditMode(String notes, Function<String, NotesSaveStatus> saveCallback, String companyName) {
+        cancelPendingPause();
         this.saveCallback = saveCallback;
         this.isEditMode = true;
         updateTitle(companyName);
 
-        getRoot().setTitle("Notes (Edit) - " + companyName);
         viewPane.setVisible(false);
         viewPane.setManaged(false);
         notesTextArea.setVisible(true);
@@ -198,12 +200,23 @@ public class NotesWindow extends UiPart<Stage> {
     }
 
     /**
+     * Cancels any pending pause transition to prevent stale callbacks from firing.
+     */
+    private void cancelPendingPause() {
+        if (currentPause != null) {
+            currentPause.stop();
+            currentPause = null;
+        }
+    }
+
+    /**
      * Set pause on certain component to show notification before closing window.
      */
     private void schedulePause(Duration duration, EventHandler<ActionEvent> onFinished) {
-        PauseTransition pause = new PauseTransition(duration);
-        pause.setOnFinished(onFinished);
-        pause.play();
+        cancelPendingPause();
+        currentPause = new PauseTransition(duration);
+        currentPause.setOnFinished(onFinished);
+        currentPause.play();
     }
 
     /**
@@ -233,6 +246,7 @@ public class NotesWindow extends UiPart<Stage> {
      * Hides the notes window.
      */
     public void hide() {
+        cancelPendingPause();
         getRoot().hide();
     }
 
