@@ -265,7 +265,7 @@ public class HelpWindow extends UiPart<Stage> {
         Stage stage = getRoot();
 
         stage.setWidth(HELP_WINDOW_WIDTH);
-        stage.setWidth(HELP_WINDOW_HEIGHT);
+        stage.setHeight(HELP_WINDOW_HEIGHT);
 
         if (!stage.isShowing()) {
             stage.show();
