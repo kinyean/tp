@@ -5,6 +5,59 @@ title: Developer Guide
 
 --------------------------------------------------------------------------------------------------------------------
 
+## **Table of Contents**
+
+* [Acknowledgements](#acknowledgements)
+* [Setting up, getting started](#setting-up-getting-started)
+* [Design](#design)
+    * [Architecture](#architecture)
+    * [UI component](#ui-component)
+    * [Logic component](#logic-component)
+    * [Model component](#model-component)
+    * [Storage component](#storage-component)
+    * [Common classes](#common-classes)
+* [Implementation](#implementation)
+    * [Find feature](#find-feature)
+    * [Archive state and filtered list views](#archive-state-and-filtered-list-views)
+    * [Notes window flow](#notes-window-flow)
+    * [Summary window flow](#summary-window-flow)
+    * [UI action dispatch](#ui-action-dispatch)
+    * [[Proposed] Undo/redo feature](#proposed-undoredo-feature)
+        * [Proposed Implementation](#proposed-implementation)
+        * [Design considerations](#design-considerations)
+* [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
+* [Appendix: Requirements](#appendix-requirements)
+    * [Product scope](#product-scope)
+    * [User stories](#user-stories)
+    * [Use cases](#use-cases)
+        * [UC01 - Add Application](#uc01---add-application)
+        * [UC02 - List applications](#uc02---list-applications)
+        * [UC03 - Delete application](#uc03---delete-application)
+        * [UC04 - Edit Application](#uc04---edit-application)
+        * [UC05 - Find applications](#uc05---find-applications)
+        * [UC06 - Archive application](#uc06---archive-application)
+        * [UC07 - Unarchive application](#uc07---unarchive-application)
+        * [UC08 - Open application notes](#uc08---open-application-notes)
+        * [UC09 - View summary](#uc09---view-summary)
+        * [UC10 - Open Help](#uc10---open-help)
+    * [Non-Functional Requirements (NFRs)](#non-functional-requirements-nfrs)
+    * [Glossary](#glossary)
+* [Appendix: Effort](#appendix-effort)
+* [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
+    * [Launch and shutdown](#launch-and-shutdown)
+    * [Adding an application](#adding-an-application)
+    * [Listing applications](#listing-applications)
+    * [Deleting an application](#deleting-an-application)
+    * [Editing an application](#editing-an-application)
+    * [Finding applications](#finding-applications)
+    * [Archiving and unarchiving applications](#archiving-and-unarchiving-applications)
+    * [Opening application notes](#opening-application-notes)
+    * [Viewing the summary](#viewing-the-summary)
+    * [Viewing help](#viewing-help)
+    * [Clearing all entries](#clearing-all-entries)
+    * [Saving data](#saving-data)
+
+
 ## **Acknowledgements**
 
 * This project is based on [se-edu/addressbook-level3](https://github.com/se-edu/addressbook-level3).
@@ -216,6 +269,7 @@ One important design detail is that `ModelManager` stores the current filter pre
 
 ### Notes window flow
 
+![Notes Activity Diagram](images/NotesActivityDiagram.png)
 HireME stores free-form notes directly in each `Application` using the `notes` field.
 
 The notes feature is implemented using three cooperating pieces:
@@ -450,7 +504,7 @@ Use case ends.
 
 ### UC02 - List applications
 
-**Main success scenario**:
+**Main Success Scenario**:
 1. User enters list command to list applications.
 2. HireME retrieves applications based on the requested view.
 3. HireME displays the applications in the current list.
@@ -474,7 +528,7 @@ Use case ends.
 
 **Precondition**: At least one application is shown in the current list
 
-**Main success scenario**:
+**Main Success Scenario**:
 1. User enters delete command to delete an application by index.
 2. HireME deletes the selected application.
 3. HireME shows a success message.
@@ -517,7 +571,7 @@ Extensions:
 
 **Precondition**: At least one application exists
 
-**Main success scenario**:
+**Main Success Scenario**:
 1. User enters find command with one or more prefixed fields.
 2. HireME applies the matching conditions to the stored applications.
 3. HireME displays the applications that match the search criteria.
@@ -538,7 +592,7 @@ Use case ends.
 
 **Precondition**: At least one active application is shown in the current list
 
-**Main success scenario**:
+**Main Success Scenario**:
 1. User enters archive command to archive an application by index.
 2. HireME marks the selected application as archived.
 3. HireME updates the displayed list.
@@ -574,7 +628,7 @@ Use case ends.
 
 **Precondition**: At least one application is shown in the current list
 
-**Main success scenario**:
+**Main Success Scenario**:
 1. User enters open command to open an application's notes by index.
 2. HireME identifies the selected application.
 3. HireME opens the notes window in view mode or edit mode, depending on the command.
@@ -592,7 +646,7 @@ Use case ends.
 
 **Precondition**: None
 
-**Main success scenario**:
+**Main Success Scenario**:
 1. User requests the application summary using the command or menu option.
 2. HireME computes the relevant statistics.
 3. HireME opens the summary window.
@@ -631,7 +685,7 @@ Use case ends.
 - The application should not depend on external services for core functionality.
 
 ### Maintainability
-- The codebase shall pass the project's Checkstyle rules before each release.
+- The codebase should adhere to the SE-EDU Java coding standards before each release.
 - A developer who has completed the setup steps in this guide should be able to locate the main logic, model, storage,
   and UI packages by using the architecture and component diagrams in this guide.
 - Each major feature shall have a User Guide section that states its command format, parameters, constraints, and at
