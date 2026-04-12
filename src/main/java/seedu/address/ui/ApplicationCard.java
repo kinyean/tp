@@ -4,6 +4,8 @@ import java.util.Comparator;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -58,9 +60,9 @@ public class ApplicationCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         companyName.setText(application.getCompanyName().fullCompanyName);
         role.setText(application.getRole().value);
-        address.setText(application.getAddress() == null ? "" : application.getAddress().value);
-        email.setText(application.getEmail() == null ? "" : application.getEmail().value);
-        website.setText(application.getWebsite() == null ? "" : application.getWebsite().websiteName);
+        makeCopyable(address, application.getAddress() == null ? null : application.getAddress().value);
+        makeCopyable(email, application.getEmail() == null ? null : application.getEmail().value);
+        makeCopyable(website, application.getWebsite() == null ? null : application.getWebsite().websiteName);
         date.setText(application.getDate().value);
         status.setText(application.getStatus().toString());
         archivedLabel.setVisible(application.isArchived());
@@ -68,5 +70,19 @@ public class ApplicationCard extends UiPart<Region> {
         application.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+    }
+    private void makeCopyable(Label label, String text) {
+        label.setText(text == null ? "" : text);
+        if (text == null || text.isBlank()) {
+            return;
+        }
+        label.setStyle("-fx-text-fill: #4FC3F7; -fx-underline: true;");
+        label.setOnMouseEntered(e -> label.setStyle("-fx-text-fill: #81D4FA; -fx-cursor: hand;"));
+        label.setOnMouseExited(e -> label.setStyle("-fx-text-fill: #4FC3F7; -fx-underline: true"));
+        label.setOnMouseClicked(e -> {
+            ClipboardContent content = new ClipboardContent();
+            content.putString(text);
+            Clipboard.getSystemClipboard().setContent(content);
+        });
     }
 }
