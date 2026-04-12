@@ -128,6 +128,7 @@ Follow these steps to set up and start using HireME:
   <br><br>
 * Items in square brackets are optional.<br>
   e.g. `n/COMPANY_NAME [e/EMAIL]` can be used as `n/Google e/hr@google.com` or as `n/Google`.
+  A command may still require at least one item from a group of optional fields; follow the notes for each command.
   <br><br>
 * Items with `…`​ after them can be used multiple times including zero times.<br>
   e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/tech`, `t/tech t/remote` etc.
@@ -195,8 +196,10 @@ Add a new application so you can keep track of where you have applied and what s
 
 Edits an existing application in HireME. Use this when you need to update details like a new status or correct a mistake.
 
-#### Format: `edit INDEX [n/COMPANY_NAME] [r/ROLE] [d/DATE] [s/STATUS] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [t/TAG]…​`
+#### Format: `edit INDEX FIELD [FIELD]…​`
 > 💡 **Tip:** See [Command Format Notes](#command-format-notes).
+
+`FIELD` can be any of: `n/COMPANY_NAME`, `r/ROLE`, `d/DATE`, `s/STATUS`, `e/EMAIL`, `w/WEBSITE`, `a/ADDRESS`, or `t/TAG`.
 
 <br><br>
 
@@ -212,7 +215,7 @@ Edits an existing application in HireME. Use this when you need to update detail
 | Address      | `a/`   | Optional | _Leave this blank to clear the field_                                    | Updated company location       |
 | Tag          | `t/`   | Optional | Alphanumeric only, no spaces, <br/>_Leave this blank to clear the field_ | Replaces all existing tags     |
 
-> ⚠ **Warning:** At least **ONE** optional parameter must be provided.
+> ⚠ **Warning:** At least **ONE** field must be provided after `INDEX`. Entering `edit INDEX` by itself is invalid.
 
 > ⚠ **Warning:** Existing values will be **overwritten** by the input values. When editing tags, the existing tags of the application will be **replaced entirely** — editing tags is not cumulative
 
@@ -295,8 +298,10 @@ View all your applications currently stored in HireME.
 
 Search for applications by entering keywords (e.g. company, role, or status) to quickly locate what you need.
 
-#### Format: `find [n/NAME] [r/ROLE] [d/DATE] [s/STATUS] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [t/TAG]…​`
+#### Format: `find FIELD [FIELD]…​`
 > 💡 **Tip:** See [Command Format Notes](#command-format-notes).
+
+`FIELD` can be any of: `n/NAME`, `r/ROLE`, `d/DATE`, `s/STATUS`, `e/EMAIL`, `w/WEBSITE`, `a/ADDRESS`, or `t/TAG`.
 
 <br><br>
 
@@ -311,7 +316,7 @@ Search for applications by entering keywords (e.g. company, role, or status) to 
 | Address      | `a/`   | Optional | Matches applications with similar address           | `a/Singapore`          |
 | Tag          | `t/`   | Optional | Matches applications with any of the specified tags | `t/tech`               |
 
-> ⚠ **Warning:** At least **ONE** optional parameter must be provided.
+> ⚠ **Warning:** At least **ONE** field must be provided. Entering `find` by itself is invalid.
 
 > 💡 **Tip:** Archived Applications **WILL BE INCLUDED** in the find command.
 
@@ -639,10 +644,10 @@ Example: `find n/Grab n/Google` searches only for `Google`.
 | Action                                                  | Format                                                                                                 | Example                                                                                                             |
 |---------------------------------------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
 | [**Add**](#adding-an-application-add)                   | `add n/COMPANY_NAME r/ROLE d/DATE s/STATUS [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [t/TAG]…​`                | `add n/Google r/Software Engineer d/15-03-2026 s/Pending t/tech` w/https://careers.google.com a/70 Pasir Panjang Rd |
-| [**Edit***](#editing-an-application--edit)              | `edit INDEX [n/COMPANY_NAME] [r/ROLE] [d/DATE] [s/STATUS] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [t/TAG]…​` | `edit 1 s/Offered`                                                                                                  |
+| [**Edit***](#editing-an-application--edit)              | `edit INDEX FIELD [FIELD]…​`                                                                           | `edit 1 s/Offered`                                                                                                  |
 | [**Delete**](#deleting-an-application--delete)          | `delete INDEX`                                                                                         | `delete 3`                                                                                                          |
 | [**List**](#listing-all-applications--list)             | `list [archived]`                                                                                      | —                                                                                                                   |
-| [**Find***](#locating-applications-find)                | `find [n/NAME] [r/ROLE] [d/DATE] [s/STATUS] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [t/TAG]…​`               | `find n/Google`                                                                                                     |
+| [**Find***](#locating-applications-find)                | `find FIELD [FIELD]…​`                                                                                 | `find n/Google`                                                                                                     |
 | [**Archive**](#archiving-an-application--archive)       | `archive INDEX`                                                                                        | `archive 2`                                                                                                         |
 | [**Unarchive**](#unarchiving-an-application--unarchive) | `unarchive INDEX`                                                                                      | `unarchive 1`                                                                                                       |
 | [**Open**](#opening-application-notes--open)            | `open INDEX m/[CHOICE_OF_EDIT]`                                                                        | `open 1 m/True`                                                                                                     |
@@ -651,7 +656,7 @@ Example: `find n/Grab n/Google` searches only for `Google`.
 | [**Clear**](#clearing-all-entries--clear)               | `clear`                                                                                                | —                                                                                                                   |
 | [**Exit**](#exiting-hireme--exit)                       | `exit`                                                                                                 | —                                                                                                                   |
 
-> ⚠ **Warning:** At least **ONE** optional field is required for the `edit` and `find` command.
+> ⚠ **Warning:** At least **ONE** optional field is required for the `edit` command. At least **ONE** search field is required for the `find` command.
 
 --------------------------------------------------------------------------------------------------------------------
 

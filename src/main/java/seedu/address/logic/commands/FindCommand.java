@@ -24,7 +24,8 @@ public class FindCommand extends Command {
             + "At least one field must be provided.\n"
             + "For optional fields (email, website, address),"
             + " using an empty keyword (e.g. find e/) matches applications with no value for that field.\n"
-            + "Format: find [n/NAME] [r/ROLE] [e/EMAIL] [w/WEBSITE] [a/ADDRESS] [d/DATE] [s/STATUS] [t/TAG]\n"
+            + "Format: find FIELD [FIELD]...\n"
+            + "Fields: n/NAME, r/ROLE, e/EMAIL, w/WEBSITE, a/ADDRESS, d/DATE, s/STATUS, t/TAG\n"
             + "Example: " + COMMAND_WORD + " n/Google r/Backend Developer s/Pending";
 
     private final Predicate<Application> predicate;
