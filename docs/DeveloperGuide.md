@@ -397,7 +397,7 @@ would usually not call `Model#commitHireME()`, `Model#undoHireME()` or `Model#re
 
 ![UndoRedoState4](images/UndoRedoState4.png)
 
-Step 6. The user executes `clear`, which calls `Model#commitHireME()`. Since `currentStatePointer` is not
+![img.png](img.png)Step 6. The user executes `clear`, which calls `Model#commitHireME()`. Since `currentStatePointer` is not
 pointing at the end of `HireMEStateList`, all states after `currentStatePointer` are purged. This matches the
 behavior of many desktop applications where making a new change invalidates the redo chain.
 
@@ -405,7 +405,7 @@ behavior of many desktop applications where making a new change invalidates the 
 
 The following activity diagram summarizes what would happen when a user executes a new mutating command:
 
-<img src="images/CommitActivityDiagram.png" width="250" />
+![CommitActivityDiagram](images/CommitActivityDiagram.png)
 
 #### Design considerations
 
