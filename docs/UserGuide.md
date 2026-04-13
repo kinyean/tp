@@ -6,7 +6,7 @@ title: User guide
 
 ## Summary
 
-HireME is a Desktop application which allows you to track and manage the information related to internship application.
+HireME is a Desktop application designed for NUS School of Computing (SoC) students to track and manage the information related to internship applications.
 This guide gives a clear overview of HireME's features and how to use them.
 
 --------------------------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ This guide gives a clear overview of HireME's features and how to use them.
 ## Quick start
 
 Follow these steps to set up and start using HireME:
-1. Ensure you have [Java 17](#java-17) or above installed in your Computer.
+1. Ensure you have [Java 17](#java-17) installed in your computer.
 
      >  **To check your Java Version:**
      > 
@@ -82,7 +82,7 @@ Follow these steps to set up and start using HireME:
 4. Launch HireME by following the steps below:
    > 1. Open a terminal (Command Prompt on Windows / Terminal on Mac).
    > <br><br>
-   > 2. Using the path to your _home folder_, Navigate to the folder where you saved HireME.jar. Use the `cd` command to change your directory. 
+   > 2. Using the path to your _home folder_, navigate to the folder where you saved HireME.jar. Use the `cd` command to change your directory. 
    > <br><br>
    >    `cd Documents\your_folder_name`
    > <br><br>
@@ -91,7 +91,7 @@ Follow these steps to set up and start using HireME:
    >    `java -jar HireME.jar`
 
      <br><br>
-5.  A [GUI](#gui) similar to the below should appear in a few seconds. Note how the app contains some sample data.
+5.  A [GUI](#gui) similar to the below should appear in a few seconds, note that the app comes preloaded with sample data.
     <br><br>
   ![Ui](images/SampleGUI.png)
     <br><br>
@@ -126,10 +126,11 @@ Follow these steps to set up and start using HireME:
 ## Command Format Notes
 **Notes about the command format:**
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/COMPANY_NAME`, `COMPANY_NAME` is a parameter which can be used as `add n/Google`.
+  e.g. in `add n/COMPANY_NAME`, `COMPANY_NAME` is a parameter that can be used as `add n/Google`.
   <br><br>
 * Leave a space between each parameter.<br>
-  e.g `edit 1 n/Grabe/john_doe@gmail.com` is not allowed.
+  e.g. `edit 1 n/Grabe/john_doe@gmail.com` will not be treated as editing two separate parameters.
+  Use `edit 1 n/Grab e/john_doe@gmail.com` instead.
   <br><br>
 * Items in square brackets are optional.<br>
   e.g. `n/COMPANY_NAME [e/EMAIL]` can be used as `n/Google e/hr@google.com` or as `n/Google`.
@@ -142,7 +143,7 @@ Follow these steps to set up and start using HireME:
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/COMPANY_NAME r/ROLE`, `r/ROLE n/COMPANY_NAME` is also acceptable.
   <br><br>
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `summary`, `exit` and `clear`) will be ignored.<br>
+* Commands that do not take parameters (such as `help`, `summary`, `exit` and `clear`) ignore extraneous input.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
   <br><br>
 * Each parameter (except tags) should only appear once in a command. If you accidentally provide duplicates (e.g. `n/Google n/Meta`), the app will flag an error.
@@ -150,7 +151,8 @@ Follow these steps to set up and start using HireME:
 
 > ⚠ **Warning:** If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 
-> ⚠ **Warning:** Special characters (including emojis and invisible spaces such as zero-width spaces) are allowed, but they may cause parsing issues and should be used with caution.
+<a id="special-characters-warning"></a>
+> ⚠ **Warning:** Special characters (including emojis and invisible spaces such as zero-width spaces) are not recommended as they may cause unexpected behavior.
 
 [Back to Table of Contents](#table-of-contents)
 
@@ -169,16 +171,16 @@ Recording your applications early helps you avoid losing track of follow-ups and
 ![Application](images/Application.png)
 <br><br>
 
-| Parameter    | Prefix | Required | Constraints                                      | Parameter Example       |
-|--------------|--------|----------|--------------------------------------------------|-------------------------|
-| Company Name | `n/`   | Yes      | Must not be blank (See warning for rare cases)   | `n/Google`              |
-| Role         | `r/`   | Yes      | Must not be blank (See warning for rare cases)   | `r/SWE Intern`          |
-| Date         | `d/`   | Yes      | Must be a valid calendar date in `DD-MM-YYYY` format | `d/15-03-2026`      |
+| Parameter    | Prefix | Required | Constraints                                                    | Parameter Example       |
+|--------------|--------|----------|----------------------------------------------------------------|-------------------------|
+| Company Name | `n/`   | Yes      | Must not be blank (see [special characters warning](#special-characters-warning) for rare edge cases) | `n/Google`              |
+| Role         | `r/`   | Yes      | Must not be blank (see [special characters warning](#special-characters-warning) for rare edge cases) | `r/SWE Intern`          |
+| Date         | `d/`   | Yes      | Must be a valid calendar date in `DD-MM-YYYY` format           | `d/15-03-2026`      |
 | Status       | `s/`   | Yes      | Must be `Offered`, `Pending`, or `Rejected` (case-insensitive) | `s/Pending` |
-| Email        | `e/`   | Optional | Must follow email format                         | `e/hr@google.com`       |
-| Website      | `w/`   | Optional | Must follow website format                       | `w/https://google.com`  |
-| Address      | `a/`   | Optional | Must not be blank (See warning for rare cases)   | `a/Singapore`           |
-| Tag          | `t/`   | Optional | Alphanumeric only, no spaces                     | `t/govtech` `t/fintech` |
+| Email        | `e/`   | Optional | Must follow a valid email format                               | `e/hr@google.com`       |
+| Website      | `w/`   | Optional | Must follow a valid website format                             | `w/https://google.com`  |
+| Address      | `a/`   | Optional | Must not be blank (see [special characters warning](#special-characters-warning) for rare edge cases) | `a/Singapore`           |
+| Tag          | `t/`   | Optional | Alphanumeric only, no spaces                                   | `t/govtech` `t/fintech` |
 
 
 > ⚠ **Warning:** Two applications with the same `Company Name` and `Role` are not allowed. (Case-insensitive) 
@@ -193,19 +195,19 @@ Recording your applications early helps you avoid losing track of follow-ups and
 #### Valid Examples:
 * `add n/Google r/Software Engineer d/15-03-2026 s/Pending`  
 
-  Adds a new application to Google. Note that this `add` command **excluded all optional fields**.
+  Adds a new application to Google. Note that this `add` command **excludes all optional fields**.
 <br><br>
 
 * `add n/Grab r/Backend Developer Intern e/careers@grab.com w/https://grab.com/careers a/3 Media Close d/01-03-2026 s/Pending t/tech t/startup`
 
-  Adds an application with tags for easier filtering later. Note that this `add` command is **not in order**.
+  Adds an application with tags for easier filtering later. Note that this `add` command's parameters are **not in the same order** as the command format.
 
 [Back to Table of Contents](#table-of-contents)
 
 ---
 ## Editing an application: `edit`
 
-Update an existing application in HireME. Use this when you need to update details like a new status or correct a mistake.
+Update the details of an existing application in HireME.
 
 #### Format: `edit INDEX FIELD [FIELD]…​`
 > 💡 **Tip:** See [Command Format Notes](#command-format-notes).
@@ -228,7 +230,7 @@ Update an existing application in HireME. Use this when you need to update detai
 
 > ⚠ **Warning:** At least **ONE** field must be provided after `INDEX`. Entering `edit INDEX` by itself is invalid.
 
-> ⚠ **Warning:** Existing values will be **overwritten** by the input values. When editing tags, the existing tags of the application will be **replaced entirely** — editing tags is not cumulative
+> ⚠ **Warning:** Existing values will be **overwritten** by the input values. When editing tags, the existing tags of the application will be **replaced entirely** — editing tags is not cumulative.
 
 <br><br>
 #### Valid Examples:
@@ -252,7 +254,7 @@ Update an existing application in HireME. Use this when you need to update detai
 
 ## Deleting an application: `delete`
 
-Delete an application you no longer need from HireME.
+Remove an application you no longer need from HireME.
 
 #### Format: `delete INDEX`
 > 💡 **Tip:** See [Command Format Notes](#command-format-notes).
@@ -387,7 +389,7 @@ An example of a filtered list is shown below:
 
 <br>
 
-Applications with roles matching "Software" is listed.
+Applications with roles matching "Software" are listed.
 
 ![Applications with roles matching `Software` are shown below.](images/FindResult.png)
 
@@ -457,7 +459,7 @@ Move an archived application back to your main list so you can continue tracking
 |-----------|--------|----------|----------------------------------------------------------------------|---------------------------------------------------|---------|
 | INDEX     | —      | Yes      | Must be a positive integer and within the bounds of the current list | Unarchives the application at the specified index | `1`     |
 
-> 💡 **Tip:** This command will only work on archived applications. See how to display archived applications [here](#listing-all-applications-list).
+> 💡 **Tip:** This command will only work on archived applications. See [Listing all applications](#listing-all-applications-list) for how to display archived applications.
 
 <br><br>
 #### Valid Examples:
@@ -473,17 +475,17 @@ Move an archived application back to your main list so you can continue tracking
 # Application Notes
 ## Opening application notes: `open`
 
-Open or update an application's notes to review important details from your application process.
+Open an application's notes to update or review additional details about your application process.
 
 #### Format: `open INDEX [m/CHOICE_OF_EDIT]`
 > 💡 **Tip:** See [Command Format Notes](#command-format-notes).
 
 <br><br>
 
-| Parameter | Prefix | Required | Constraints                                                          | Result                                                                            | Full Example     |
-|-----------|--------|----------|----------------------------------------------------------------------|-----------------------------------------------------------------------------------|------------------|
-| INDEX     | —      | Yes      | Must be a positive integer and within the bounds of the current list | Opens the notes for the application at the specified index. Defaults to view mode | `open 1`         |
-| Mode      | `m/`   | Optional | Must be `true` or `false` (case-insensitive). The `m/` prefix is lower-case. | Opens the notes in edit mode if `true`, or view mode if `false`          | `open 1 m/True`  |
+| Parameter | Prefix | Required | Constraints                                                                  | Result                                                                                        | Full Example     |
+|-----------|--------|----------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|------------------|
+| INDEX     | —      | Yes      | Must be a positive integer and within the bounds of the current list.        | Opens the notes for the application at the specified index for review. Defaults to view mode. | `open 1`         |
+| Mode      | `m/`   | Optional | Must be `true` or `false` (case-insensitive). The `m/` prefix is lower-case. | Opens the notes in edit mode if `true`, or view mode if `false`.                              | `open 1 m/True`  |
 
 > 💡 **Tip:** If the mode is omitted, the open command defaults to view mode. E.g. `open 1` opens the notes of the 1st application in view mode.
 
@@ -510,7 +512,7 @@ The Notes window will pop up, showing your notes for the application at the spec
   <br><br>
 
 #### Troubleshoot - Notes
-If an application is deleted with the Notes window open, your notes for the nonexistent application will not save.
+If an application is deleted with the Notes window open, your notes for the deleted application will not be saved.
 The **_'Save'_** button will indicate a warning notification that the notes window failed to save and will **automatically close shortly after**.
 
 ![Notes Save Failed](images/Notes_savefailed.png)
@@ -525,7 +527,7 @@ See an overview of your job applications and track your progress at a glance in 
 
 #### Format: `summary`
 
-> 💡 **Tip:** you can also open the same Summary window from the `Summary` menu or with the keyboard shortcut `F2`.
+> 💡 **Tip:** You can also open the same Summary window from the `Summary` menu or with the keyboard shortcut `F2`.
 
 
 <br><br>
@@ -602,7 +604,7 @@ HireME data is saved automatically as a JSON file `[JAR file location]/data/Hire
 
 ## FAQ
 
-**Q: How do I transfer my data to another Computer?**  
+**Q: How do I transfer my data to another computer?**  
 **A:** Install HireME on the other computer and overwrite the empty data file it creates with the file that contains the data from your previous HireME home folder.
 
 **Q: Can I add two applications to the same company?**  
