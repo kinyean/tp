@@ -333,7 +333,7 @@ Search for applications by entering keywords (e.g. company, role, or status) to 
 
 > ⚠ **Warning:** For Address, special characters (including emojis and invisible spaces such as zero-width spaces) are not recommended as they may cause unexpected behavior.
 
-> 💡 **Tip:** Archived Applications **WILL BE INCLUDED** in the find command.
+> 💡 **Tip:** The find command **includes** archived applications in search results.
 
 
 <br><br>
@@ -355,7 +355,7 @@ Search for applications by entering keywords (e.g. company, role, or status) to 
 | Missing prefix            | `find Google s/Pending`  | `Google` is ignored; only `s/Pending` is applied      |
 
 > ⚠  **Warning:** If the same prefix (except `t/`) is used multiple times in `find`, only the last value will be used.
-See [Troubleshooting – Find](#troubleshooting---find).
+See [Troubleshoot – Find](#troubleshoot---find).
 
 <br><br>
 #### Valid Examples:
@@ -395,7 +395,7 @@ Applications with roles matching "Software" are listed.
 ![Applications with roles matching `Software` are shown below.](images/FindResult.png)
 
 
-#### Troubleshooting - Find
+#### Troubleshoot - Find
 
 | Scenario                | Input Example                     | Result                                      |
 |-------------------------|-----------------------------------|---------------------------------------------|
@@ -426,7 +426,7 @@ Archive an application to remove it from your main list while keeping it availab
 |-----------|--------|----------|----------------------------------------------------------------------|-------------------------------------------------|---------|
 | INDEX     | —      | Yes      | Must be a positive integer and within the bounds of the current list | Archives the application at the specified index | `1`     |
 
-> 💡 **Tip:** Archiving an application does not delete it. It sets the application as archived and hides it from the main list.
+> 💡 **Tip:** Archiving an application does not delete it. The archive command marks the application as archived and hides it from the main list.
 
 > 💡 **Tip:** The current view is preserved after archiving. In the default `list` view, the archived application disappears because it is no longer active.
 
@@ -497,6 +497,8 @@ The Notes window will pop up, showing your notes for the application at the spec
 <br><br>
 #### Notes in Edit Mode: `open INDEX m/True`
 The Notes window will pop up, showing your notes for the application at the specified index. You are able to modify your notes in this mode. The changes will only be saved if you click the **_'Save'_** button.
+
+> 💡 **Tip:** You can also use the keyboard shortcut `Ctrl + S` to save.
 
 ![Notes in Edit Mode](images/Notes_editmode.png)
 
@@ -587,7 +589,7 @@ Closes HireME.
 ---
 ## Saving the data
 
-HireME data is saved to your hard disk automatically after any command that changes the data. There is no need to save manually.
+HireME automatically saves data after any command that changes the data. There is no need to save manually.
 
 [Back to Table of Contents](#table-of-contents)
 
