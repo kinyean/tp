@@ -397,7 +397,7 @@ would usually not call `Model#commitHireME()`, `Model#undoHireME()` or `Model#re
 
 ![UndoRedoState4](images/UndoRedoState4.png)
 
-![img.png](img.png)Step 6. The user executes `clear`, which calls `Model#commitHireME()`. Since `currentStatePointer` is not
+Step 6. The user executes `clear`, which calls `Model#commitHireME()`. Since `currentStatePointer` is not
 pointing at the end of `HireMEStateList`, all states after `currentStatePointer` are purged. This matches the
 behavior of many desktop applications where making a new change invalidates the redo chain.
 
