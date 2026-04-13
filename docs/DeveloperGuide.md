@@ -19,12 +19,14 @@ title: Developer Guide
 * [Implementation](#implementation)
     * [Find feature](#find-feature)
     * [Archive state and filtered list views](#archive-state-and-filtered-list-views)
+        * [Design considerations](#design-considerations)
     * [Notes window flow](#notes-window-flow)
+        * [Design considerations](#design-considerations-1)
     * [Summary window flow](#summary-window-flow)
     * [UI action dispatch](#ui-action-dispatch)
     * [[Proposed] Undo/redo feature](#proposed-undoredo-feature)
         * [Proposed Implementation](#proposed-implementation)
-        * [Design considerations](#design-considerations)
+        * [Design considerations](#design-considerations-2)
 * [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
 * [Appendix: Requirements](#appendix-requirements)
     * [Product scope](#product-scope)
@@ -241,7 +243,7 @@ The `find` feature filters the displayed application list based on one or more u
 
 The sequence diagram below illustrates the interactions when the user executes `find n/google`:
 
-![Interactions Inside the Logic Component for the `find n/google` Command](images/FindSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `find n/google` Command](images/FindSequenceDiagram.png)  
 
 
 ### Archive state and filtered list views
@@ -270,6 +272,18 @@ where edits are represented by replacing immutable objects rather than mutating 
 One important design detail is that `ModelManager` stores the current filter predicate. This allows commands such as
 `edit`, `archive`, and `unarchive` to refresh the displayed list without accidentally resetting the current view.
 
+#### Design considerations
+
+**Aspect: How to represent archive state:**
+
+* **Alternative 1:** Use a tag (e.g., `archived`) to mark archived applications.
+  * Pros: Reuses existing tag infrastructure, no new fields needed.
+  * Cons: Conflicts with user-defined tags. Operations like `edit 1 t/` would accidentally unarchive an application by clearing all tags. Filtering logic becomes more complex since archive state is mixed with regular tags.
+
+* **Alternative 2 (current choice):** Use a dedicated `isArchived` boolean field inside `Application`.
+  * Pros: No conflict with user tags. Clean toggle behavior. Simpler predicate-based filtering.
+  * Cons: Every command that creates a replacement `Application` must preserve the `isArchived` flag.
+
 ### Notes window flow
 
 ![Notes Activity Diagram](images/NotesActivityDiagram.png)
@@ -291,6 +305,18 @@ When the user saves notes from the notes window:
 
 This design keeps the note editor out of the command parser while still preserving a single source of truth for
 application data in the model.
+
+#### Design considerations
+
+**Aspect: How to store application notes:**
+
+* **Alternative 1 (current choice):** Store notes as a String field inside `Application`.
+  * Pros: Notes are saved and serialized together with the application. No extra files or classes to manage.
+  * Cons: Editing notes requires creating a new replacement `Application` object due to immutability.
+
+* **Alternative 2:** Store notes in a separate file per application.
+  * Pros: Notes can be edited independently without touching the application object.
+  * Cons: Requires managing file creation, deletion, and linking between files and applications. Risk of orphaned files if an application is deleted without cleaning up its notes file.
 
 ### Summary window flow
 
@@ -839,9 +865,24 @@ Given below are instructions to test the app manually.
 
 2. Test case: `list abc` <br>
 
-    Expected:
-   * No list is changed.
-   * An error message is shown.
+   Expected:
+    * No list is changed.
+    * An error message is shown.
+
+#### Listing archived applications
+
+1. Prerequisite: At least one application has been archived using the `archive` command.
+
+2. Test case: `list archived` <br>
+
+   Expected:
+  * Only archived applications are shown.
+  * Active applications are hidden.
+
+3. Test case: `list archived` when no applications are archived. <br>
+
+   Expected:
+  * An empty list is shown.
    
 
 ### Deleting an application
@@ -913,10 +954,7 @@ Given below are instructions to test the app manually.
     Expected:
    * No application is edited.
    * An error message is shown because the date is invalid.
-
-
-
-
+   
 
 ### Finding applications
 
