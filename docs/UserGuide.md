@@ -152,7 +152,7 @@ Follow these steps to set up and start using HireME:
 > ⚠ **Warning:** If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 
 <a id="special-characters-warning"></a>
-> ⚠ **Warning:** Special characters (including emojis and invisible spaces such as zero-width spaces) are not recommended as they may cause unexpected behavior.
+> ⚠ **Warning:** For Address, special characters (including emojis and invisible spaces such as zero-width spaces) are not recommended as they may cause unexpected behavior.
 
 [Back to Table of Contents](#table-of-contents)
 
@@ -173,8 +173,8 @@ Recording your applications early helps you avoid losing track of follow-ups and
 
 | Parameter    | Prefix | Required | Constraints                                                    | Parameter Example       |
 |--------------|--------|----------|----------------------------------------------------------------|-------------------------|
-| Company Name | `n/`   | Yes      | Must not be blank (see [special characters warning](#special-characters-warning) for rare edge cases) | `n/Google`              |
-| Role         | `r/`   | Yes      | Must not be blank (see [special characters warning](#special-characters-warning) for rare edge cases) | `r/SWE Intern`          |
+| Company Name | `n/`   | Yes      | Must not be blank | `n/Google`              |
+| Role         | `r/`   | Yes      | Must not be blank | `r/SWE Intern`          |
 | Date         | `d/`   | Yes      | Must be a valid calendar date in `DD-MM-YYYY` format           | `d/15-03-2026`      |
 | Status       | `s/`   | Yes      | Must be `Offered`, `Pending`, or `Rejected` (case-insensitive) | `s/Pending` |
 | Email        | `e/`   | Optional | Must follow a valid email format                               | `e/hr@google.com`       |
@@ -329,8 +329,7 @@ Search for applications by entering keywords (e.g. company, role, or status) to 
 
 > ⚠ **Warning:** At least **ONE** field must be provided. Entering `find` by itself is invalid.
 
-> ⚠ **Warning:** If you used special characters (including emojis and invisible spaces such as zero-width spaces) this
-> command may behave unexpectedly.
+> ⚠ **Warning:** For Address, special characters (including emojis and invisible spaces such as zero-width spaces) are not recommended as they may cause unexpected behavior.
 
 > 💡 **Tip:** Archived Applications **WILL BE INCLUDED** in the find command.
 
