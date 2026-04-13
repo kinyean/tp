@@ -230,15 +230,18 @@ This section describes noteworthy implementation details of features that are cu
 
 The `find` feature filters the displayed application list based on one or more user-provided search fields.
 
-The sequence diagram below illustrates the interactions when the user executes `find n/google`:
-
-![Interactions Inside the Logic Component for the `find n/google` Command](images/FindSequenceDiagram.png)
 
 `find` is implemented using `FindCommandParser`, `ApplicationMatchesPredicate`, and `FindCommand`:
 
 * `AddressBookParser` delegates `find` input to `FindCommandParser`.
-* `FindCommandParser` parses the supplied prefixed fields and constructs an `ApplicationMatchesPredicate`.
-* `FindCommand` applies that matching condition through `Model#updateFilteredApplicationList(...)`.
+* `FindCommandParser` parses the supplied prefixed fields, constructs an `ApplicationMatchesPredicate`, and uses it to create a `FindCommand`.
+* `FindCommand` applies that matching condition through `Model#updateFilteredApplicationList(...)`, then creates a `CommandResult` based on the filtered application list.
+
+
+
+The sequence diagram below illustrates the interactions when the user executes `find n/google`:
+
+![Interactions Inside the Logic Component for the `find n/google` Command](images/FindSequenceDiagram.png)
 
 
 ### Archive state and filtered list views
