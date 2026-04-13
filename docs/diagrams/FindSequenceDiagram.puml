@@ -11,6 +11,7 @@ participant "r:CommandResult" as CommandResult LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
+participant "p:ApplicationMatchesPredicate" as ApplicationMatchesPredicate MODEL_COLOR
 participant "m:Model" as Model MODEL_COLOR
 end box
 
@@ -30,11 +31,18 @@ deactivate FindCommandParser
 AddressBookParser -> FindCommandParser : parse("n/google")
 activate FindCommandParser
 
+create ApplicationMatchesPredicate
+FindCommandParser -> ApplicationMatchesPredicate
+activate ApplicationMatchesPredicate
+
+ApplicationMatchesPredicate --> FindCommandParser : p
+deactivate ApplicationMatchesPredicate
+
 create FindCommand
 FindCommandParser -> FindCommand
 activate FindCommand
 
-FindCommand --> FindCommandParser :
+FindCommand --> FindCommandParser : f
 deactivate FindCommand
 
 FindCommandParser --> AddressBookParser : f
@@ -48,7 +56,13 @@ deactivate AddressBookParser
 LogicManager -> FindCommand : execute(m)
 activate FindCommand
 
-FindCommand -> Model : updateFilteredApplicationList(predicate)
+FindCommand -> Model : updateFilteredApplicationList(p)
+activate Model
+
+Model --> FindCommand
+deactivate Model
+
+FindCommand -> Model : getFilteredApplicationList()
 activate Model
 
 Model --> FindCommand
@@ -58,7 +72,7 @@ create CommandResult
 FindCommand -> CommandResult
 activate CommandResult
 
-CommandResult --> FindCommand
+CommandResult --> FindCommand : r
 deactivate CommandResult
 
 FindCommand --> LogicManager : r
